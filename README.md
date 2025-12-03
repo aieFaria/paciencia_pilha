@@ -5,10 +5,10 @@ Trabalho apresentado como requisito parcial de avaliação.
 Utilização do conhecimentos de Linguagem de Programação, sendo Java a escolhida.
 E tambem na estrutura de dados Pilha.
 
+> import java.util.Stack
 
-## 📜 Passo a serem realizados:
-- [❌] - Desenvolver estrutura de Pilha utilizável, classe Stack; 
-- [❌] - Implementar testes da classe Stack;
+
+## 📜 Tarefas a serem realizadas:
 - [❌] - Criar lógica do jogo;
 - [❌] - Implementar testes unitários de partes do jogo;
 - [❌] - Criar interface do jogo.
@@ -30,16 +30,14 @@ E tambem na estrutura de dados Pilha.
      │       │    └── java
      │       │         └── com.faria
      │       │            ├── App.java
-     │       │            ├── Stack.java
-     │       │            ├── StackNode.java
-     │       │            ├── Resultados.java
-     │       │            ├── TuringMachine.java
-     │       │            └── interfaces
-     │       │                └── IStack.java
+     │       │            ├── ScreenMain.java
+     │       │            ├── BCard.java
+     │       │            └── enums
+     │       │                ├── Naipes.java
+     │       │                └── NumCarta.java
      │       │
      │       └── test.java
-     │           ├── testStack.java
-     │           └── testStackNode.java
+     │           └── testStack.java
      │
      ├── target
      ├── README.md
