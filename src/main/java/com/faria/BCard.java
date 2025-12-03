@@ -28,12 +28,12 @@ public class BCard extends Object{
     public String toString() {
 
         StringBuilder cartaInfo = new StringBuilder();
-        cartaInfo.append("|| ");
+        cartaInfo.append("| ");
         cartaInfo.append(this.naipe.getValor());
         cartaInfo.append(this.numeroDaCarta.getNome());
         // cartaInfo.append("\nCor: " + this.corCarta);
         cartaInfo.append(this.visibilidade ? "○" : "#");
-        cartaInfo.append(" ||");
+        cartaInfo.append(" |");
 
         return cartaInfo.toString();
     }

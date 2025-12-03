@@ -1,11 +1,8 @@
 package com.faria;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
-import javax.swing.JRootPane;
-import javax.swing.border.LineBorder;
 
 import java.awt.Color;
 import java.awt.Dimension;

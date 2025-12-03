@@ -29,12 +29,12 @@ E tambem na estrutura de dados Pilha.
      │       ├── main
      │       │    └── java
      │       │         └── com.faria
-     │       │            ├── App.java
-     │       │            ├── ScreenMain.java
-     │       │            ├── BCard.java
-     │       │            └── enums
-     │       │                ├── Naipes.java
-     │       │                └── NumCarta.java
+     │       │             ├── App.java
+     │       │             ├── ScreenMain.java
+     │       │             ├── BCard.java
+     │       │             └── enums
+     │       │                 ├── Naipes.java
+     │       │                 └── NumCarta.java
      │       │
      │       └── test.java
      │           └── testStack.java
