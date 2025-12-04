@@ -29,12 +29,18 @@ E tambem na estrutura de dados Pilha.
      │       ├── main
      │       │    └── java
      │       │         └── com.faria
-     │       │             ├── App.java
-     │       │             ├── ScreenMain.java
-     │       │             ├── BCard.java
-     │       │             └── enums
-     │       │                 ├── Naipes.java
-     │       │                 └── NumCarta.java
+     │       │              ├── App.java
+     │       │              ├── ScreenMain.java
+     │       │              ├── BCard.java
+     │       │              ├── EstadoJogo.java
+     │       │              ├── PilhaGuard.java
+     │       │              ├── enums
+     │       │              │    ├── Naipes.java
+     │       │              │    └── NumCarta.java
+     │       │              │
+     │       │              └── telasSecundarias
+     │       │                   ├── ScreenDeCompra.java
+     │       │                   └── ScreenGuardar.java
      │       │
      │       └── test.java
      │           └── testStack.java
@@ -42,7 +48,7 @@ E tambem na estrutura de dados Pilha.
      ├── target
      ├── README.md
      ├── pom.xml
-     └── tm_rule30.json
+     └── paciencia_pilha.jar
      .
 
 ## 👷 Desenvolvimento

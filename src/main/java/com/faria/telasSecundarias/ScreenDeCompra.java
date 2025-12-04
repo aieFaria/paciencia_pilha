@@ -1,58 +1,64 @@
-package com.faria;
+package com.faria.telasSecundarias;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.ActiveEvent;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Image;
 import java.util.EmptyStackException;
-import java.util.EventObject;
 import java.util.Stack;
 
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
-import com.faria.PuzzleGame.PuzzleButton;
+import com.faria.BCard;
+import com.faria.EstadoJogo;
+import com.faria.ScreenMain;
 
-public class MonteDeCompra extends JPanel {
+
+
+public class ScreenDeCompra extends JPanel {
 
     // Pilha1: Cartas viradas para baixo, isVisible = false. Pilha principal
     // Pilha2: Cartas viradas para cima, isVisible = true
     private Stack<BCard> pilha1, pilha2;
+    private boolean inicializado = false;
+    private JButton controleDoMonte = new JButton(); // Botão para controlar virada das cartas da pilha1
+    private JButton controleMonteSaida = new JButton(); // Botão para controlar movimentação das cartas da pilha2
 
     // Configurações padrão do MonteDeCompra
-    public void iniciarORatualizar() {
+    public String iniciarORatualizar() {
+
+        String comando = "";
 
         // Atualizar Tela caso a janela ja esteja visivel
-        if ( !this.isVisible() ) {
+        if ( !inicializado ) {
             this.setLayout(null);
 
-            JButton controleDoMonte = new JButton(); // Botão para controlar virada das cartas da pilha1
-            JButton controleMonteSaida = new JButton(); // Botão para controlar movimentação das cartas da pilha2
-
-            controleDoMonte.setBounds(1, 1, 105, 140);
-            controleMonteSaida.setBounds(controleDoMonte.getWidth()+30, 1, 105, 140);
+            controleDoMonte.setBounds(0, 0, 105, 140);
+            controleMonteSaida.setBounds(controleDoMonte.getWidth()+30, 0, 105, 140);
             controleDoMonte.setBackground(null);
             controleMonteSaida.setBackground(Color.WHITE);
-            //controleDoMonte.addActionListener(this::clicarMonte);
+            controleMonteSaida.addActionListener(this::clicarMonte);
 
+            // Ações executadas ao apertar sobre o monte de compra
             controleDoMonte.addActionListener(new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     acao();
-                    atualizaBotao(controleDoMonte, pilha1);
-                    atualizaBotao(controleMonteSaida, pilha2);
+                    
                     iniciarORatualizar();
+
                 }
 
             });
 
-            atualizaBotao(controleDoMonte, pilha1);
-            atualizaBotao(controleMonteSaida, pilha2);
+            // atualizaBotao(controleDoMonte, pilha1);
+            // atualizaBotao(controleMonteSaida, pilha2);
+            // this.repaint();
             
             this.setBounds(10, 5, controleDoMonte.getWidth()+30+controleMonteSaida.getWidth(), 140);
             this.setBackground(Color.BLUE);
@@ -60,17 +66,21 @@ public class MonteDeCompra extends JPanel {
             this.add(controleDoMonte);
             this.setVisible(true);
             
-        } else {
-            this.revalidate();
-            this.repaint();
-        }
+            inicializado = true;
+        } 
 
+        atualizaBotao(controleDoMonte, pilha1);
+        atualizaBotao(controleMonteSaida, pilha2);
+
+        this.revalidate();
+        this.repaint();
         
+        return comando;
         //this.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     }
     
 
-    public MonteDeCompra(Stack<BCard> pilha1, Stack<BCard> pilha2) {
+    public ScreenDeCompra(Stack<BCard> pilha1, Stack<BCard> pilha2) {
         this.pilha1 = pilha1;
         this.pilha2 = pilha2;
 
@@ -84,16 +94,33 @@ public class MonteDeCompra extends JPanel {
                ( pilha2.isEmpty() ? "null" : this.pilha2.peek() );
     }
 
-    private void clicarMonte(ActionEvent e) {
-        this.acao();
-        this.iniciarORatualizar();
-        JButton btnClicado = (JButton) e.getSource();
+    private void clicarMonte(ActionEvent ev) {
+        JButton buttonDestino = (JButton) ev.getSource();
+
+        if (EstadoJogo.temCartaSelecionada()) {
+        
+             System.out.println("Já tem carta selecionada, ação inválida no monte por enquanto.");
+             EstadoJogo.limparSelecao();
+             return;
+        }
+
+        // 
+        if (!pilha2.isEmpty()) {
+            EstadoJogo.pilhaOrigem = this.pilha2;
+            EstadoJogo.botaoOrigem = buttonDestino;
+            
+            // Configuração de destaque visual
+            buttonDestino.setBorder(new LineBorder(Color.YELLOW, 3)); 
+            System.out.println("Carta do Monte Selecionada");
+        }
+        
+
     }
     
     /*
      * Atualiza a carta do topo do monte conforme há a movimentação das cartas
-     * @param botão de referncia para ser aatualizado
-     * @param pilha de referencia para ser analisado o topo
+     * @param   botão de referncia para ser aatualizado
+     * @param   pilha de referencia para ser analisado o topo
      */
     private void atualizaBotao(JButton botao, Stack<BCard> pilhaRef) {
         String nomeImage = "";

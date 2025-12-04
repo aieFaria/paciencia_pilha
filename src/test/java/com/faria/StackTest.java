@@ -4,7 +4,8 @@ import org.junit.jupiter.api.Test;
 
 import com.faria.enums.Naipes;
 import com.faria.enums.NumCarta;
-import com.faria.MonteDeCompra;
+import com.faria.telasSecundarias.ScreenDeCompra;
+import com.faria.telasSecundarias.ScreenDeCompra;
 
 import org.junit.jupiter.api.Nested;
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,7 +55,7 @@ public class StackTest {
             pilha2.add( new BCard(Naipes.ESPADAS, NumCarta.AS, BCard.PRETO, false) );
             pilha2.add( new BCard(Naipes.ESPADAS, NumCarta.DOIS, BCard.PRETO, false) );
             
-            pilha = MonteDeCompra.esvaziarPilha( pilha2 );
+            pilha = ScreenDeCompra.esvaziarPilha( pilha2 );
 
             //assertEquals(pilha.peek(), new BCard(Naipes.ESPADAS, NumCarta.AS, BCard.PRETO, false));
             assertEquals(pilha2.isEmpty(), true);

@@ -4,6 +4,9 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
+import com.faria.telasSecundarias. ScreenDeCompra;
+import com.faria.telasSecundarias.ScreenGuardar;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,6 +23,8 @@ import java.io.IOException;
 public class ScreenMain extends JFrame {
 
     private JTextArea console = new JTextArea();
+    public static  ScreenDeCompra pilhaCompra;
+    public static ScreenGuardar pilhasFinais;
 
     public ScreenMain(String titulo, Dimension tamanho, boolean visibilidade, String icone) {
 
@@ -54,7 +59,6 @@ public class ScreenMain extends JFrame {
         this.revalidate();
         this.console.setText(texto);
     }
-
 
     /*
      * Carregamento de imagem com BufferImage
