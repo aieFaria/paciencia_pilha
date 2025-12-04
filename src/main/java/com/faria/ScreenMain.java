@@ -38,8 +38,9 @@ public class ScreenMain extends JFrame {
         console.setVisible(true);
         console.setFont(new Font(Font.MONOSPACED, Font.PLAIN,14));
         console.setForeground(Color.WHITE);
-        console.setBounds(1, 1, this.getWidth(), this.getHeight());
-        this.add(console);
+        //console.setBounds(1, 1, this.getWidth(), this.getHeight());
+        console.setBounds(1, 1, 0, 0);
+        //this.add(console);
 
     }
 
@@ -49,6 +50,8 @@ public class ScreenMain extends JFrame {
     }
 
     public void atualizarTela(String texto) {
+        this.repaint();
+        this.revalidate();
         this.console.setText(texto);
     }
 
@@ -58,7 +61,7 @@ public class ScreenMain extends JFrame {
      * Evita erros na abertura da imagem
      * @param caminho É o nome do arquivo da imagem préviamente salvo na pasta resources.
     */
-    private Image carregarImagem(String caminho) {
+    public static Image carregarImagem(String caminho) {
 
         BufferedImage img = null;
         caminho = "src/main/resources/" + caminho; // Caminho padrão da imagen + nome do arquivo de imagem
