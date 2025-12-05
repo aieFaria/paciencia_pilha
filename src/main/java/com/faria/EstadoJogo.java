@@ -3,42 +3,56 @@ package com.faria;
 import java.util.Stack;
 import javax.swing.JButton;
 
-import com.faria.telasSecundarias. ScreenDeCompra;
-import com.faria.telasSecundarias.ScreenDeCompra;
 
 public class EstadoJogo {
-    // Variáveis estáticas ("Globais")
-    public static Stack<BCard> pilhaOrigem = null; // Referencia de saída da carta
-    public static JButton botaoOrigem = null;      // Referencia do botão que precisa atualizar
-    public static ScreenDeCompra mt = null;
-    public static boolean in =  false;
-    
-    // Método para limpar a seleção após uma jogada
+
+    public static Stack<BCard> pilhaOrigem = null; // De onde a carta está saindo
+    public static JButton botaoOrigem = null;      // Qual botão precisa ser atualizado visualmente
+
+    public static Stack<BCard> getPilhaOrigem() {
+        return pilhaOrigem;
+    }
+
+    public static void setPilhaOrigem(Stack<BCard> pilhaOrigem) {
+        EstadoJogo.pilhaOrigem = pilhaOrigem;
+    }
+
+    public static JButton getBotaoOrigem() {
+        return botaoOrigem;
+    }
+
+    public static void setBotaoOrigem(JButton botaoOrigem) {
+        EstadoJogo.botaoOrigem = botaoOrigem;
+    }
+
+    // Método utilitário para definir a seleção de forma centralizada
+    // Use isto no ScreenGuardar ou MonteDeCompra ao clicar numa carta
+    public static void setSelecao(Stack<BCard> origem, JButton botao) {
+   
+        limparSelecaoVisual();
+
+        pilhaOrigem = origem;
+        botaoOrigem = botao;
+    }
+
+
     public static void limparSelecao() {
-
-        if(mt != null) {
-            atualizaTudo(mt);
-        }
-
-        if (botaoOrigem != null) {
-            
-            botaoOrigem.setBorder(javax.swing.UIManager.getBorder("Button.border"));
-        }
+        limparSelecaoVisual();
         pilhaOrigem = null;
         botaoOrigem = null;
     }
 
-    private static void atualizaTudo( ScreenDeCompra mt) {
-        mt.iniciarORatualizar();
-        mt.repaint();
+    // Método auxiliar apenas para limpar o visual (borda), sem perder a referência lógica
+    // Útil se quisermos trocar a seleção sem processar jogada
+    private static void limparSelecaoVisual() {
+        if (botaoOrigem != null) {
+            
+            botaoOrigem.setBorder(javax.swing.UIManager.getBorder("Button.border"));
+        }
     }
 
-    // Verifica se temos uma carta "na mão"
+    // Verifica se temos uma carta "na mão" pronta para mover
     public static boolean temCartaSelecionada() {
         return pilhaOrigem != null && !pilhaOrigem.isEmpty();
-    }
-
-    public static boolean inserivel(){
-        return true;
     }
 }

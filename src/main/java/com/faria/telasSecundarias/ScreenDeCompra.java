@@ -97,6 +97,7 @@ public class ScreenDeCompra extends JPanel {
     private void clicarMonte(ActionEvent ev) {
         JButton buttonDestino = (JButton) ev.getSource();
 
+        //boolean testeLogico = !(EstadoJogo.pilhaOrigem.equals(pilha1) || EstadoJogo.pilhaOrigem.equals(pilha2));
         if (EstadoJogo.temCartaSelecionada()) {
         
              System.out.println("Já tem carta selecionada, ação inválida no monte por enquanto.");
@@ -109,7 +110,7 @@ public class ScreenDeCompra extends JPanel {
             EstadoJogo.pilhaOrigem = this.pilha2;
             EstadoJogo.botaoOrigem = buttonDestino;
             
-            // Configuração de destaque visual
+            // Borda de seleção
             buttonDestino.setBorder(new LineBorder(Color.YELLOW, 3)); 
             System.out.println("Carta do Monte Selecionada");
         }
@@ -170,6 +171,8 @@ public class ScreenDeCompra extends JPanel {
 
                 pilha2.push( movido );
             }
+        } finally {
+            EstadoJogo.limparSelecao();
         }
 
     }

@@ -19,6 +19,14 @@ public class BCard extends Object{
     private boolean visibilidade; //True → carta virada pra cima, False → carta virada para baixo
 
     
+    public String getCorCarta() {
+        return corCarta;
+    }
+
+    public void setCorCarta(String corCarta) {
+        this.corCarta = corCarta;
+    }
+
     // Construtor padrão de uma Carta
     public BCard(Naipes naipe, NumCarta numeroDaCarta, String cor, boolean visibilidade){
         this.naipe = naipe;
@@ -32,7 +40,7 @@ public class BCard extends Object{
 
         StringBuilder cartaInfo = new StringBuilder();
         cartaInfo.append("| ");
-        cartaInfo.append(this.naipe.getValor());
+        cartaInfo.append(this.naipe);
         cartaInfo.append(this.numeroDaCarta.getNome());
         // cartaInfo.append("\nCor: " + this.corCarta);
         cartaInfo.append(this.visibilidade ? "○" : "#");

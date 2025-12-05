@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import com.faria.enums.Naipes;
 import com.faria.enums.NumCarta;
 import com.faria.telasSecundarias.ScreenDeCompra;
-import com.faria.telasSecundarias.ScreenDeCompra;
 
 import org.junit.jupiter.api.Nested;
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,6 +38,30 @@ public class StackTest {
             pilha.push(1);
 
             assertEquals(pilha.peek(), 1);
+        }
+
+        @Test
+        @DisplayName("Teste para inserção na pilha do jogo")
+        public void pilhaDoJogo() {
+            PilhaJogo pilha = new PilhaJogo();
+            BCard carta = new BCard(Naipes.PAUS, NumCarta.AS, BCard.PRETO, false);
+
+            assertEquals(pilha.inserirPush(carta), false);
+
+            BCard cartaK = new BCard(Naipes.PAUS, NumCarta.K, BCard.PRETO, false);
+
+            assertEquals(pilha.inserirPush(cartaK), true);
+
+            BCard cartaQ = new BCard(Naipes.PAUS, NumCarta.Q, BCard.PRETO, false);
+
+            assertEquals(pilha.inserirPush(cartaQ), false);
+
+            cartaQ.setCorCarta("vermelho");
+
+            assertEquals(pilha.inserirPush(cartaQ), true);
+
+            assertEquals(cartaK.isVisible(), true);
+            assertEquals(cartaQ.isVisible(), true);
         }
     }
 

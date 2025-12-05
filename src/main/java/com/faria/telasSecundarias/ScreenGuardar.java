@@ -4,8 +4,9 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Image;
 
-import java.util.EmptyStackException;
+import java.util.Stack;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -26,6 +27,7 @@ public class ScreenGuardar extends JPanel {
     public JButton controlePilhaOuros = new JButton();
     public JButton controlePilhaPaus = new JButton();
     public JButton controlePilhaCopas = new JButton();
+    private ScreenJogo screenJogoRef;
 
     // Inicialização padrão trava os Naipes das pilhas
     public ScreenGuardar ( ScreenDeCompra monteCompraRef) {
@@ -54,43 +56,55 @@ public class ScreenGuardar extends JPanel {
             controlePilhaCopas.addActionListener(e -> {
 
                 if (EstadoJogo.temCartaSelecionada()) {
-                       
+
+                    if (EstadoJogo.getPilhaOrigem() == pilhaCopas.getGuardPilha()) {
+
+                        moverPilha(controlePilhaCopas, pilhaCopas.getGuardPilha()); 
+                        return;
+                    }
+
                     BCard cartaMover = EstadoJogo.pilhaOrigem.pop();
+                    boolean statusMover = false;
 
-                    try {
-                        if (cartaMover.getNaipe() == Naipes.COPAS &&
-                        cartaMover.getNumeroDaCarta().getValor() == ( pilhaCopas.getGuardPilha().peek().getNumeroDaCarta().getValor() + 1 )) {
-                        
-             
-                        this.pilhaCopas.push(cartaMover);
-                 
-                        atualizaBotao(controlePilhaCopas, this.pilhaCopas); // Atualiza referencia de destino
-                        monteCompraRef.iniciarORatualizar();
-
-                        this.jogada = true;
-                    } else {
-                        EstadoJogo.pilhaOrigem.push(cartaMover);
-
-                        atualizaBotao(controlePilhaCopas, this.pilhaCopas);
-                        monteCompraRef.iniciarORatualizar();
-                    }
-                    } catch (EmptyStackException ex) {
-                        if( cartaMover.getNaipe().equals(pilhaCopas.getNaipeAceito()) && cartaMover.getNumeroDaCarta() == NumCarta.AS) {
-                            pilhaCopas.push(cartaMover);
+                    if (this.pilhaCopas.getGuardPilha().isEmpty()) {
+                       
+                        if (cartaMover.getNaipe() == Naipes.COPAS && cartaMover.getNumeroDaCarta() == NumCarta.AS) {
+                            this.pilhaCopas.push(cartaMover);
+                            statusMover = true;
                         }
+                    } else if (cartaMover.getNaipe() == Naipes.COPAS && (
+                        cartaMover.getNumeroDaCarta().getValor() == ( pilhaCopas.getGuardPilha().peek().getNumeroDaCarta().getValor() + 1 ))) {
+                        
+                        this.pilhaCopas.push(cartaMover);
+                        statusMover = true;
+                 
                     }
 
-                    // Pega próxama carta do monte caso a pilha ja esteja vazia, método automatico
-                    if (monteCompraRef.getPilha2().isEmpty()) {
-                        monteCompraRef.acao();
+                    if (statusMover) {
+
+                        // Atualização dos componentes envolvidos
+                        screenJogoRef.atualizarTodosBotoes();
+                        atualizaBotao(controlePilhaCopas, this.pilhaCopas.getGuardPilha());
+                        EstadoJogo.getPilhaOrigem(); //verificar
+                        monteCompraRef.iniciarORatualizar();
+                        EstadoJogo.getBotaoOrigem().repaint();
+                        this.repaint();
+                        this.jogada = true;
+
+                    } else {
+                        // Voltar carta para origem
+                        EstadoJogo.pilhaOrigem.push(cartaMover);
+                        atualizaBotao(controlePilhaCopas, this.pilhaCopas.getGuardPilha());
+                        monteCompraRef.iniciarORatualizar();
+                        this.repaint();
                     }
 
                     EstadoJogo.limparSelecao();
     
+                } else {
+                    moverPilha(controlePilhaCopas, this.pilhaCopas.getGuardPilha());
                 }
 
-                atualizaBotao(controlePilhaCopas, pilhaCopas);
-                monteCompraRef.iniciarORatualizar();
                 this.repaint();
 
             });
@@ -101,46 +115,55 @@ public class ScreenGuardar extends JPanel {
             controlePilhaOuros.addActionListener(e -> {
 
                 if (EstadoJogo.temCartaSelecionada()) {
+
+                    if (EstadoJogo.getPilhaOrigem() == pilhaOuros.getGuardPilha()) {
+
+                        moverPilha(controlePilhaOuros, pilhaOuros.getGuardPilha()); 
+                        return;
+                    }
                        
                     BCard cartaMover = EstadoJogo.pilhaOrigem.pop();
-                    //System.out.println("Ref; " + (cartaMover.getNumeroDaCarta().getValor() == ( pilhaOuros.getGuardPilha().peek().getNumeroDaCarta().getValor() + 1 )));
+                    boolean statusMover = false;
 
-                    try {
-                        if (cartaMover.getNaipe() == Naipes.OUROS && (
+                    if (this.pilhaOuros.getGuardPilha().isEmpty()) {
+                       
+                        if (cartaMover.getNaipe() == Naipes.OUROS && cartaMover.getNumeroDaCarta() == NumCarta.AS) {
+                            this.pilhaOuros.push(cartaMover);
+                            statusMover = true;
+                        }
+                    } else if (cartaMover.getNaipe() == Naipes.OUROS && (
                         cartaMover.getNumeroDaCarta().getValor() == ( pilhaOuros.getGuardPilha().peek().getNumeroDaCarta().getValor() + 1 ))) {
                         
-             
                         this.pilhaOuros.push(cartaMover);
+                        statusMover = true;
                  
-                        atualizaBotao(controlePilhaOuros, this.pilhaOuros); // Atualiza referencia de destino
-                        monteCompraRef.iniciarORatualizar();
+                    }
 
+                    if (statusMover) {
+
+                        // Atualização dos componentes envolvidos
+                        screenJogoRef.atualizarTodosBotoes();
+                        atualizaBotao(controlePilhaOuros, this.pilhaOuros.getGuardPilha());
+                        EstadoJogo.getPilhaOrigem(); //verificar
+                        monteCompraRef.iniciarORatualizar();
+                        EstadoJogo.getBotaoOrigem().repaint();
+                        this.repaint();
                         this.jogada = true;
+
                     } else {
+                        // Voltar carta para origem
                         EstadoJogo.pilhaOrigem.push(cartaMover);
-
-                        atualizaBotao(controlePilhaOuros, this.pilhaOuros);
+                        atualizaBotao(controlePilhaOuros, this.pilhaOuros.getGuardPilha());
                         monteCompraRef.iniciarORatualizar();
-                    }
-                    } catch (EmptyStackException ex) {
-                         
-                        if( cartaMover.getNaipe().equals(pilhaOuros.getNaipeAceito()) && cartaMover.getNumeroDaCarta() == NumCarta.AS) {
-                            
-                            pilhaOuros.push(cartaMover);
-                            
-                        }
-                    }
-
-                    if (monteCompraRef.getPilha2().isEmpty()) {
-                        monteCompraRef.acao();
+                        this.repaint();
                     }
 
                     EstadoJogo.limparSelecao();
     
+                } else {
+                    moverPilha(controlePilhaOuros, this.pilhaOuros.getGuardPilha());
                 }
 
-                atualizaBotao(controlePilhaOuros, pilhaOuros);
-                monteCompraRef.iniciarORatualizar();
                 this.repaint();
 
             });
@@ -153,44 +176,56 @@ public class ScreenGuardar extends JPanel {
 
                 if (EstadoJogo.temCartaSelecionada()) {
                        
-                    BCard cartaMover = EstadoJogo.pilhaOrigem.pop();
-                    //System.out.println("Ref; " + (cartaMover.getNumeroDaCarta().getValor() == ( pilhaOuros.getGuardPilha().peek().getNumeroDaCarta().getValor() + 1 )));
+                    if (EstadoJogo.getPilhaOrigem() == pilhaEspadas.getGuardPilha()) {
 
-                    try {
-                        if (cartaMover.getNaipe() == Naipes.ESPADAS && (
+                        moverPilha(controlePilhaEspadas, pilhaEspadas.getGuardPilha()); 
+                        return;
+                    }
+                       
+                    BCard cartaMover = EstadoJogo.pilhaOrigem.pop();
+                    boolean statusMover = false;
+
+                    if (this.pilhaEspadas.getGuardPilha().isEmpty()) {
+                       
+                        if (cartaMover.getNaipe() == Naipes.ESPADAS && cartaMover.getNumeroDaCarta() == NumCarta.AS) {
+                            this.pilhaEspadas.push(cartaMover);
+                            statusMover = true;
+                        }
+                    } else if (cartaMover.getNaipe() == Naipes.ESPADAS && (
                         cartaMover.getNumeroDaCarta().getValor() == ( pilhaEspadas.getGuardPilha().peek().getNumeroDaCarta().getValor() + 1 ))) {
                         
-             
                         this.pilhaEspadas.push(cartaMover);
+                        statusMover = true;
                  
-                        atualizaBotao(controlePilhaEspadas, this.pilhaEspadas); // Atualiza referencia de destino
-                        monteCompraRef.iniciarORatualizar();
+                    }
 
+                    if (statusMover) {
+
+                        // Atualização dos componentes envolvidos
+                        screenJogoRef.atualizarTodosBotoes();
+                        atualizaBotao(controlePilhaEspadas, this.pilhaEspadas.getGuardPilha());
+                        EstadoJogo.getPilhaOrigem(); //verificar
+                        monteCompraRef.iniciarORatualizar();
+                        EstadoJogo.getBotaoOrigem().repaint();
+                        this.repaint();
                         this.jogada = true;
+
                     } else {
+                        // Voltar carta para origem
                         EstadoJogo.pilhaOrigem.push(cartaMover);
-
-                        atualizaBotao(controlePilhaEspadas, this.pilhaEspadas);
+                        atualizaBotao(controlePilhaEspadas, this.pilhaEspadas.getGuardPilha());
                         monteCompraRef.iniciarORatualizar();
-                    }
-                    } catch (EmptyStackException ex) {
-                         
-                        if( cartaMover.getNaipe().equals(pilhaEspadas.getNaipeAceito()) && cartaMover.getNumeroDaCarta() == NumCarta.AS) {
-                            
-                            pilhaEspadas.push(cartaMover);
-                            
-                        }
+                        this.repaint();
                     }
 
-
-                    if (monteCompraRef.getPilha2().isEmpty()) {
-                        monteCompraRef.acao();
-                    }
                     EstadoJogo.limparSelecao();
     
+                } else {
+                    moverPilha(controlePilhaEspadas, this.pilhaEspadas.getGuardPilha());
                 }
 
-                atualizaBotao(controlePilhaEspadas, pilhaEspadas);
+                screenJogoRef.atualizarTodosBotoes();
+                atualizaBotao(controlePilhaEspadas, pilhaEspadas.getGuardPilha());
                 monteCompraRef.iniciarORatualizar();
                 this.repaint();
 
@@ -203,54 +238,66 @@ public class ScreenGuardar extends JPanel {
 
                 if (EstadoJogo.temCartaSelecionada()) {
                        
-                    BCard cartaMover = EstadoJogo.pilhaOrigem.pop();
-                    //System.out.println("Ref; " + (cartaMover.getNumeroDaCarta().getValor() == ( pilhaOuros.getGuardPilha().peek().getNumeroDaCarta().getValor() + 1 )));
+                    if (EstadoJogo.getPilhaOrigem() == pilhaPaus.getGuardPilha()) {
 
-                    try {
-                        if (cartaMover.getNaipe() == Naipes.PAUS && (
+                        moverPilha(controlePilhaPaus, pilhaPaus.getGuardPilha()); 
+                        return;
+                    }
+                       
+                    BCard cartaMover = EstadoJogo.pilhaOrigem.pop();
+                    boolean statusMover = false;
+
+                    if (this.pilhaPaus.getGuardPilha().isEmpty()) {
+                       
+                        if (cartaMover.getNaipe() == Naipes.PAUS && cartaMover.getNumeroDaCarta() == NumCarta.AS) {
+                            this.pilhaPaus.push(cartaMover);
+                            statusMover = true;
+                        }
+                    } else if (cartaMover.getNaipe() == Naipes.PAUS && (
                         cartaMover.getNumeroDaCarta().getValor() == ( pilhaPaus.getGuardPilha().peek().getNumeroDaCarta().getValor() + 1 ))) {
                         
                         this.pilhaPaus.push(cartaMover);
+                        statusMover = true;
                  
-                        atualizaBotao(controlePilhaPaus, this.pilhaPaus); // Atualiza referencia de destino
-                        monteCompraRef.iniciarORatualizar();
+                    }
 
+                    if (statusMover) {
+
+                        atualizaBotao(EstadoJogo.botaoOrigem, EstadoJogo.pilhaOrigem);
+                        atualizaBotao(controlePilhaPaus, this.pilhaPaus.getGuardPilha());
+                        EstadoJogo.getPilhaOrigem(); //verificar
+                        monteCompraRef.iniciarORatualizar();
+                        EstadoJogo.getBotaoOrigem().repaint();
+                        this.repaint();
                         this.jogada = true;
+
                     } else {
+                        // Voltar carta para origem
                         EstadoJogo.pilhaOrigem.push(cartaMover);
-
-                        atualizaBotao(controlePilhaPaus, this.pilhaPaus);
+                        atualizaBotao(controlePilhaPaus, this.pilhaPaus.getGuardPilha());
                         monteCompraRef.iniciarORatualizar();
-                    }
-                    } catch (EmptyStackException ex) {
-                         
-                        if( cartaMover.getNaipe().equals(pilhaPaus.getNaipeAceito()) && cartaMover.getNumeroDaCarta() == NumCarta.AS) {
-                            
-                            pilhaPaus.push(cartaMover);
-                            
-                        }
+                        this.repaint();
                     }
 
-                    if (monteCompraRef.getPilha2().isEmpty()) {
-                        monteCompraRef.acao();
-                    }
                     EstadoJogo.limparSelecao();
     
+                } else {
+                    moverPilha(controlePilhaPaus, this.pilhaPaus.getGuardPilha());
                 }
 
-                atualizaBotao(controlePilhaPaus, pilhaPaus);
+                atualizaBotao(controlePilhaPaus, pilhaPaus.getGuardPilha());
                 monteCompraRef.iniciarORatualizar();
                 this.repaint();
 
             });
 
-            atualizaBotao(controlePilhaCopas, pilhaCopas);
-            atualizaBotao(controlePilhaPaus, pilhaPaus);
-            atualizaBotao(controlePilhaEspadas, pilhaEspadas);
-            atualizaBotao(controlePilhaOuros, pilhaOuros);
+            atualizaBotao(controlePilhaCopas, pilhaCopas.getGuardPilha());
+            atualizaBotao(controlePilhaPaus, pilhaPaus.getGuardPilha());
+            atualizaBotao(controlePilhaEspadas, pilhaEspadas.getGuardPilha());
+            atualizaBotao(controlePilhaOuros, pilhaOuros.getGuardPilha());
             monteCompraRef.repaint();
 
-            this.setBounds(240+30+105+30-5, 5, (controlePilhaCopas.getWidth()+30)*4-30, 140);
+            this.setBounds(240+30+105+30+10, 5, (controlePilhaCopas.getWidth()+30)*4-30, 140);
             this.add(controlePilhaCopas);
             this.add(controlePilhaOuros);
             this.add(controlePilhaEspadas);
@@ -258,14 +305,36 @@ public class ScreenGuardar extends JPanel {
             this.setVisible(true);
             this.setBackground(Color.GREEN);
         } else {
-            atualizaBotao(controlePilhaCopas, pilhaCopas);
-            atualizaBotao(controlePilhaPaus, pilhaPaus);
-            atualizaBotao(controlePilhaEspadas, pilhaEspadas);
-            atualizaBotao(controlePilhaOuros, pilhaOuros);
+            atualizaBotao(controlePilhaCopas, pilhaCopas.getGuardPilha());
+            atualizaBotao(controlePilhaPaus, pilhaPaus.getGuardPilha());
+            atualizaBotao(controlePilhaEspadas, pilhaEspadas.getGuardPilha());
+            atualizaBotao(controlePilhaOuros, pilhaOuros.getGuardPilha());
+            monteCompraRef.iniciarORatualizar();
             monteCompraRef.repaint();
             monteCompraRef.revalidate();
             this.revalidate();
             this.repaint();
+        }
+    }
+
+
+    /*
+     * Método para mover elementos da pilha
+     * @param botão de referencia
+     * @param pilha de referencia
+     *
+     */
+    private void moverPilha(JButton botao, Stack<BCard> pilha) {
+        if (pilha.isEmpty()) return;
+
+        // Se clicou na mesma que já estava selecionada -> Desmarca
+        if (EstadoJogo.getPilhaOrigem() == pilha) {
+            EstadoJogo.limparSelecao();
+            botao.setBorder(null);
+        } else {
+            // Nova seleção
+            EstadoJogo.setSelecao(pilha, botao);
+            botao.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 3));
         }
     }
 
@@ -274,21 +343,21 @@ public class ScreenGuardar extends JPanel {
      * @param   botão de referncia para ser aatualizado
      * @param   (PilhaGuard) pilha de referencia para ser analisado o topo
      */
-    private void atualizaBotao(JButton botao, PilhaGuard pilhaRef) {
-        String nomeImage = "";
+    private void atualizaBotao(JButton botao, Stack<BCard> pilhaRef) {
+        String nomeImage = "empty.png";
 
-        if ( !pilhaRef.getGuardPilha().isEmpty() ) {
+        if ( !pilhaRef.isEmpty() ) {
     
-            nomeImage = (pilhaRef.getGuardPilha().peek().getNumeroDaCarta()+"").toLowerCase() + 
-                         pilhaRef.getGuardPilha().peek().getNaipe()+".png";
+            nomeImage = (pilhaRef.peek().getNumeroDaCarta()+"").toLowerCase() + 
+                         pilhaRef.peek().getNaipe()+".png";
 
-        } else if (pilhaRef.equals(pilhaCopas)) {
+        } else if (pilhaRef == pilhaCopas.getGuardPilha()) {
             nomeImage = "emptyCOPAS.png";
-        } else if (pilhaRef.equals(pilhaEspadas)) {
+        } else if (pilhaRef == pilhaEspadas.getGuardPilha()) {
             nomeImage = "emptyESPADAS.png";
-        } else if (pilhaRef.equals(pilhaPaus)) {
+        } else if (pilhaRef == pilhaPaus.getGuardPilha()) {
             nomeImage = "emptyPAUS.png";
-        } else if (pilhaRef.equals(pilhaOuros)) {
+        } else if (pilhaRef == pilhaOuros.getGuardPilha()) {
             nomeImage = "emptyOUROS.png";
         }
         
@@ -338,6 +407,10 @@ public class ScreenGuardar extends JPanel {
 
     public void setJogada(boolean jogada) {
         this.jogada = jogada;
+    }
+
+    public void setScreenJogo(ScreenJogo pilhasDoJogo) {
+        this. screenJogoRef = pilhasDoJogo;
     }
 
     
