@@ -44,7 +44,7 @@ public class ScreenJogo extends JPanel {
             configuraBotoes();
             atualizarTodosBotoes();
 
-            this.setBounds(10, 175, 915, 300);
+            this.setBounds(10, 175, 915, 580);
             this.setBackground(Color.PINK);
             this.setVisible(true);
 
@@ -266,8 +266,6 @@ public class ScreenJogo extends JPanel {
 
             retorno.add(pilhaJogo);
             
-            
-            System.out.println("Ref: " + retorno.get(i).getJogoPilha().peek());
         }
 
         // Ao final atualizar JButtons e pilhas

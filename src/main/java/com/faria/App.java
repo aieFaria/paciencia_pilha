@@ -21,7 +21,7 @@ public class App {
 
         // Construtor da tela
         ScreenMain tela = new ScreenMain("PACIÊNCIA", 
-                                         new Dimension(950, 600), 
+                                         new Dimension(950, 800), 
                            true,  
                                  "icon.png");
         
