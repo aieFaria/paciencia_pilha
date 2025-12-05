@@ -9,9 +9,9 @@ E tambem na estrutura de dados Pilha.
 
 
 ## 📜 Tarefas a serem realizadas:
-- [❌] - Criar lógica do jogo;
+- [🔘] - Criar lógica do jogo;
 - [❌] - Implementar testes unitários de partes do jogo;
-- [❌] - Criar interface do jogo.
+- [🔘] - Criar interface do jogo.
 
 
 
@@ -34,12 +34,15 @@ E tambem na estrutura de dados Pilha.
      │       │              ├── BCard.java
      │       │              ├── EstadoJogo.java
      │       │              ├── PilhaGuard.java
+     │       │              ├── PilhaJogo.java
+     │       │              ├── -----.java
      │       │              ├── enums
      │       │              │    ├── Naipes.java
      │       │              │    └── NumCarta.java
      │       │              │
      │       │              └── telasSecundarias
      │       │                   ├── ScreenDeCompra.java
+     │       │                   ├── ScreenJogo.java
      │       │                   └── ScreenGuardar.java
      │       │
      │       └── test.java
@@ -67,7 +70,10 @@ Pontos importantes a descrever:
 - Como jogar paciencia própriamente: 
 - Como seram realizadas as ações de jogo;
 
-♠️ ♥️ ♣️ ♦️ Um jogo de cartas ...
+♠️ ♥️ ♣️ ♦️ Um jogo de cartas ... <Incluir aqui a explicação do jogo paciencia em si>
+
+Com um clique se escolhe a carta e com outro se define o local de destino.
+Dessa forma é possivel realizadar todas as movimentações necessárias.
 
 ## ✒️ Autores: 
 | [<img src="https://avatars.githubusercontent.com/u/99749672?v=4" width=115><br><sub>Gabriel Alexandre</sub>](https://https://github.com/aieFaria) |
