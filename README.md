@@ -9,9 +9,9 @@ E tambem na estrutura de dados Pilha.
 
 
 ## 📜 Tarefas a serem realizadas:
-- [🔘] - Criar lógica do jogo;
+- [✔️] - Criar lógica do jogo;
 - [❌] - Implementar testes unitários de partes do jogo;
-- [🔘] - Criar interface do jogo.
+- [✔️] - Criar interface do jogo.
 
 
 
@@ -35,14 +35,15 @@ E tambem na estrutura de dados Pilha.
      │       │              ├── EstadoJogo.java
      │       │              ├── PilhaGuard.java
      │       │              ├── PilhaJogo.java
-     │       │              ├── -----.java
+     │       │              ├── AgrupamentoButoesControle.java
      │       │              ├── enums
      │       │              │    ├── Naipes.java
      │       │              │    └── NumCarta.java
      │       │              │
-     │       │              └── telasSecundarias
+     │       │              └── telas
      │       │                   ├── ScreenDeCompra.java
      │       │                   ├── ScreenJogo.java
+     │       │                   ├── ScreenMain.java
      │       │                   └── ScreenGuardar.java
      │       │
      │       └── test.java

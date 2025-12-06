@@ -91,6 +91,7 @@ public class ScreenGuardar extends JPanel {
                         screenJogoRef.atualizarVisualTodasPilhas();
                         atualizaBotao(controlePilhaCopas, this.pilhaCopas.getGuardPilha());
                         this.repaint();
+                        verificarvitoria();
                         this.jogada = true;
 
                     } else {
@@ -155,6 +156,7 @@ public class ScreenGuardar extends JPanel {
                         screenJogoRef.atualizarVisualTodasPilhas();
                         this.repaint();
                         this.jogada = true;
+                        verificarvitoria();
 
                     } else {
                         // Voltar carta para origem
@@ -219,6 +221,7 @@ public class ScreenGuardar extends JPanel {
                         screenJogoRef.atualizarVisualTodasPilhas();
                         this.repaint();
                         this.jogada = true;
+                        verificarvitoria();
 
                     } else {
                         // Voltar carta para origem
@@ -282,6 +285,7 @@ public class ScreenGuardar extends JPanel {
                         screenJogoRef.atualizarVisualTodasPilhas();
                         this.repaint();
                         this.jogada = true;
+                        verificarvitoria();
 
                     } else {
                         // Voltar carta para origem
@@ -318,7 +322,7 @@ public class ScreenGuardar extends JPanel {
             this.add(controlePilhaEspadas);
             this.add(controlePilhaPaus);
             this.setVisible(true);
-            this.setBackground(Color.GREEN);
+            this.setBackground(Color.PINK);
         } else {
             atualizaBotao(controlePilhaCopas, pilhaCopas.getGuardPilha());
             atualizaBotao(controlePilhaPaus, pilhaPaus.getGuardPilha());
@@ -434,7 +438,7 @@ public class ScreenGuardar extends JPanel {
 
         if ((13 == pilhaOuros.getGuardPilha().size() && 13 ==  pilhaCopas.getGuardPilha().size() &&
             13 == pilhaEspadas.getGuardPilha().size() && 13 ==  pilhaPaus.getGuardPilha().size())) {
-
+            
         
 
             ScreenMain.caixaDialogoVitoria();

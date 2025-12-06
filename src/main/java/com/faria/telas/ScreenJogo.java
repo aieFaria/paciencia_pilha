@@ -89,7 +89,7 @@ public class ScreenJogo extends JPanel {
                 
                 if (propIndex != null) {
                     int indexCarta = (int) propIndex;
-                    System.out.println(Integer.valueOf(indexCarta));
+                    //System.out.println(Integer.valueOf(indexCarta));
                     tratarCliqueMeio(pilhaLogica, painelAtual, indexCarta, btnClicado);
                 }
             });
@@ -112,7 +112,6 @@ public class ScreenJogo extends JPanel {
             Stack<BCard> subPilha = EstadoJogo.getSubPilhaMovimento();
             
             if (validarMovimentoSubPilha(subPilha, pilhaAlvo)) {
-                System.out.println("Antes: " + EstadoJogo.getPilhaOrigem());
 
                 Stack<BCard> origemReal = EstadoJogo.getPilhaOrigem();
                 int qtdParaRemover = subPilha.size();
@@ -120,9 +119,7 @@ public class ScreenJogo extends JPanel {
                 for (int i = 0; i < qtdParaRemover; i++) {
                     if (!origemReal.isEmpty()) origemReal.pop();
                 }
-
-                System.out.println("Depois: " + EstadoJogo.getPilhaOrigem());
-                
+     
                 pilhaAlvo.getJogoPilha().addAll(subPilha);
                 finalizarMovimentoSucesso();
             } else {

@@ -4,8 +4,12 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 
 import com.faria.App;
 
@@ -13,6 +17,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -30,14 +35,31 @@ public class ScreenMain extends JFrame {
 
     public ScreenMain(String titulo, Dimension tamanho, boolean visibilidade, String icone) {
 
+        JMenuBar barraMenu = new JMenuBar();
+        JMenu menu = new JMenu("Jogo");
+        menu.setMnemonic(KeyEvent.VK_J);
+
+        JMenuItem itemNovo = new JMenuItem("Novo Jogo");
+        itemNovo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0)); // Atalho F2
+        itemNovo.addActionListener(e -> {
+            this.dispose();
+            App.iniciar();
+        });
+        menu.add(itemNovo);
+        barraMenu.add(menu);
+
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Configuração padrão
-        //this.setIconImage();
+        this.getContentPane().setBackground(Color.PINK);
 
         // Configurações pertinentes a nossa aplicação
         this.setTitle(titulo);
         this.setSize(tamanho);
         this.setVisible(visibilidade);
         this.setIconImage(carregarImagem(icone));
+        this.setJMenuBar(barraMenu);
+        
+        
 
         // Acrescentando console por padrão
         console.setFocusable(false);
@@ -85,7 +107,7 @@ public class ScreenMain extends JFrame {
         }
    
         if (img == null) {
-            System.out.println("Imagem não encontrada <" + caminho + ">"); //Insere o caminho completo para visualização
+    
             return null;
         }
 
@@ -123,6 +145,9 @@ public class ScreenMain extends JFrame {
 
             switch (optionPane.getValue() != null ? (String) optionPane.getValue() : "Sair do jogo") {
                 case "Iniciar outra partida":
+                    for (java.awt.Window window : java.awt.Window.getWindows()) {
+                        window.dispose();
+                    }
                     App.iniciar();
                 break;
 

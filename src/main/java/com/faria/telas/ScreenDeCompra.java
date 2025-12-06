@@ -38,8 +38,8 @@ public class ScreenDeCompra extends JPanel {
 
             controleDoMonte.setBounds(0, 0, 105, 140);
             controleMonteSaida.setBounds(controleDoMonte.getWidth()+30, 0, 105, 140);
-            controleDoMonte.setBackground(null);
-            controleMonteSaida.setBackground(Color.WHITE);
+            controleDoMonte.setBackground(Color.PINK);
+            controleMonteSaida.setBackground(Color.PINK);
             controleMonteSaida.addActionListener(this::clicarMonte);
 
             // Ações executadas ao apertar sobre o monte de compra
@@ -62,7 +62,7 @@ public class ScreenDeCompra extends JPanel {
             // this.repaint();
             
             this.setBounds(10, 5, controleDoMonte.getWidth()+30+controleMonteSaida.getWidth(), 140);
-            this.setBackground(Color.BLUE);
+            this.setBackground(Color.PINK);
             this.add(controleMonteSaida);
             this.add(controleDoMonte);
             this.setVisible(true);
