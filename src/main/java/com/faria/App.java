@@ -57,6 +57,7 @@ public class App {
         ScreenGuardar pilhasFinais =  new ScreenGuardar(pilhDeCompra);
         ScreenJogo pilhasDoJogo = new ScreenJogo(pilhasFinais, baralho.subList(24, 52));
         pilhasFinais.setScreenJogo(pilhasDoJogo);
+        pilhDeCompra.setScreenJogo(pilhasDoJogo);
         //System.out.println(pilhDeCompra.getPilha1());
 
         pilhasDoJogo.iniciarORatualizar();

@@ -39,6 +39,7 @@ public class ScreenDeCompra extends JPanel {
     private boolean inicializado = false;
     private JButton controleDoMonte = new JButton(); // Botão para controlar virada das cartas da pilha1
     private JButton controleMonteSaida = new JButton(); // Botão para controlar movimentação das cartas da pilha2
+    private ScreenJogo screenJogoRef; //Serve para atualizar a ScreenJogo quando necessário
 
     // Configurações padrão do MonteDeCompra
     public String iniciarORatualizar() {
@@ -58,14 +59,11 @@ public class ScreenDeCompra extends JPanel {
             // Ações executadas ao apertar sobre o monte de compra
             controleDoMonte.addActionListener(new ActionListener() {
 
-
-
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     acao();
                     
                     iniciarORatualizar();
-
                 }
 
             });
@@ -111,10 +109,9 @@ public class ScreenDeCompra extends JPanel {
     private void clicarMonte(ActionEvent ev) {
         JButton buttonDestino = (JButton) ev.getSource();
 
-        if( EstadoJogo.isPilhaSelected() ) { return; }
-
         if (EstadoJogo.isPilhaSelected()) {
             EstadoJogo.limparSelecao();
+            screenJogoRef.iniciarORatualizar();
             return;
         }
 
@@ -172,7 +169,11 @@ public class ScreenDeCompra extends JPanel {
     public void acao() {
 
         // Evita que a pilha de movimento desapareça
-        if( EstadoJogo.isPilhaSelected() ) { return; }
+        if( EstadoJogo.isPilhaSelected() ) { 
+            EstadoJogo.limparSelecao();
+            screenJogoRef.iniciarORatualizar();
+            return;
+        }
 
         // Bloco try-catch para capturar exeção das pilhas vazias
         // Como tratar cada um deles
@@ -237,6 +238,14 @@ public class ScreenDeCompra extends JPanel {
 
     public void setPilha2(Stack<BCard> pilha2) {
         this.pilha2 = pilha2;
+    }
+
+    public ScreenJogo getScreenJogo() {
+        return screenJogoRef;
+    }
+
+    public void setScreenJogo(ScreenJogo screenJogoRef) {
+        this.screenJogoRef = screenJogoRef;
     }
 
 }

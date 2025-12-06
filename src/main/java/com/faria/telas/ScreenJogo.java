@@ -104,7 +104,7 @@ public class ScreenJogo extends JPanel {
         Object propIndex = btnAlvo.getClientProperty("index");
         if (propIndex != null) {
             int indexCarta = (int) propIndex;
-            System.out.println(Integer.valueOf(indexCarta));
+
             indexClicado = (int)((Object) btnAlvo.getClientProperty("index"));
         }
         
@@ -148,6 +148,7 @@ public class ScreenJogo extends JPanel {
                 moverComSucesso();
             } else {
                 EstadoJogo.limparSelecao();
+                atualizaTodasPilhas();
                 pilhaOrigem.push(cartaMover);
    
             }
