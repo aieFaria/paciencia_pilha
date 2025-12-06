@@ -78,7 +78,7 @@ public class ScreenJogo extends JPanel {
                 acaoInserirSimples(pilhaLogica, grupoPilhaJogoAtual, btnClicado);
             });
 
-            // --- 2. AÇÃO AO CLICAR NO MEIO (Mover Cascata) ---
+          
             grupoPilhaJogoAtual.setacaoTransferirPilha(e -> {
                 JButton btnClicado = (JButton) e.getSource();
                 // Recupera o índice da carta clicada (propriedade salva no agrupamentButoesControle)
