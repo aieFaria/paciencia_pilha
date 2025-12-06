@@ -98,15 +98,15 @@ public class ScreenDeCompra extends JPanel {
     private void clicarMonte(ActionEvent ev) {
         JButton buttonDestino = (JButton) ev.getSource();
 
-        if( EstadoJogo.temSubPilhaSelecionada() ) { return; }
+        if( EstadoJogo.isPilhaSelected() ) { return; }
 
-        if (EstadoJogo.temSubPilhaSelecionada()) {
+        if (EstadoJogo.isPilhaSelected()) {
             EstadoJogo.limparSelecao();
             return;
         }
 
         //boolean testeLogico = !(EstadoJogo.pilhaOrigem.equals(pilha1) || EstadoJogo.pilhaOrigem.equals(pilha2));
-        if (EstadoJogo.temCartaSelecionada()) {
+        if (EstadoJogo.isCardSelected()) {
         
             System.out.println("Ação inválida no monte por enquanto.");
             EstadoJogo.limparSelecao();
@@ -159,7 +159,7 @@ public class ScreenDeCompra extends JPanel {
     public void acao() {
 
         // Evita que a pilha de movimento desapareça
-        if( EstadoJogo.temSubPilhaSelecionada() ) { return; }
+        if( EstadoJogo.isPilhaSelected() ) { return; }
 
         // Bloco try-catch para capturar exeção das pilhas vazias
         // Como tratar cada um deles

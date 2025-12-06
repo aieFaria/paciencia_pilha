@@ -70,7 +70,7 @@ public class EstadoJogo {
         }
     }
 
-    public static boolean temCartaSelecionada() {
+    public static boolean isCardSelected() {
         
         return pilhaOrigem != null && !pilhaOrigem.isEmpty();
     }
@@ -95,7 +95,7 @@ public class EstadoJogo {
         return subPilhaMovimento;
     }
 
-    public static boolean temSubPilhaSelecionada() {
+    public static boolean isPilhaSelected() {
         
         return subPilhaMovimento != null && !subPilhaMovimento.isEmpty();
     }

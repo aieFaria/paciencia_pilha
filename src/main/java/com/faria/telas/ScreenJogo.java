@@ -34,20 +34,19 @@ public class ScreenJogo extends JPanel {
         if ( !this.isVisible() ) {
             this.setLayout(null);
 
-            // Se for a primeira vez, cria os painéis
             if (pilhaJogo.isEmpty()) {
                 criarPaineisVisuais();
-                configurarAcoesPaineis();
+                configurarBotoes();
             }
             
-            atualizarVisualTodasPilhas();
+            atualizaTodasPilhas();
 
-            this.setBounds(10, 175, 915, 600); // Altura maior para caber cascata
+            this.setBounds(10, 175, 915, 600);
             this.setBackground(Color.PINK);
             this.setVisible(true);
 
         } else {
-            atualizarVisualTodasPilhas();
+            atualizaTodasPilhas();
             
             if (this.getPilhaGuardada() != null) {
                 this.getPilhaGuardada().iniciarORatualizar();
@@ -59,30 +58,28 @@ public class ScreenJogo extends JPanel {
 
     private void criarPaineisVisuais() {
         for (int i = 0; i < 7; i++) {
-            agrupamentButoesControle painel = new agrupamentButoesControle();
-            // Posiciona horizontalmente
-            painel.setBounds((30 + 105) * i, 0, 105, 500); 
+            agrupamentButoesControle grupoPilhaJogo = new agrupamentButoesControle();
+
+            grupoPilhaJogo.setBounds((30 + 105) * i, 0, 105, 500); 
             
-            this.pilhaJogo.add(painel);
-            this.add(painel);
+            this.pilhaJogo.add(grupoPilhaJogo);
+            this.add(grupoPilhaJogo);
         }
     }
 
-    private void configurarAcoesPaineis() {
+    private void configurarBotoes() {
         for (int ii = 0; ii < this.pilhaJogo.size(); ii++) {
             
-            int index = ii; // Variável final para uso no lambda
-            agrupamentButoesControle painelAtual = this.pilhaJogo.get(index);
-            PilhaJogo pilhaLogica = this.listadePilhas.get(index);
+            agrupamentButoesControle grupoPilhaJogoAtual = this.pilhaJogo.get(ii);
+            PilhaJogo pilhaLogica = this.listadePilhas.get(ii);
 
-            // --- 1. AÇÃO AO CLICAR NA CARTA DO TOPO (Carta única) ---
-            painelAtual.setacaoTransferirUnica(e -> {
+            grupoPilhaJogoAtual.setacaoTransferirUnica(e -> {
                 JButton btnClicado = (JButton) e.getSource();
-                tratarCliqueTopo(pilhaLogica, painelAtual, btnClicado);
+                acaoInserirSimples(pilhaLogica, grupoPilhaJogoAtual, btnClicado);
             });
 
             // --- 2. AÇÃO AO CLICAR NO MEIO (Mover Cascata) ---
-            painelAtual.setacaoTransferirPilha(e -> {
+            grupoPilhaJogoAtual.setacaoTransferirPilha(e -> {
                 JButton btnClicado = (JButton) e.getSource();
                 // Recupera o índice da carta clicada (propriedade salva no agrupamentButoesControle)
                 Object propIndex = btnClicado.getClientProperty("index");
@@ -90,14 +87,13 @@ public class ScreenJogo extends JPanel {
                 if (propIndex != null) {
                     int indexCarta = (int) propIndex;
                     //System.out.println(Integer.valueOf(indexCarta));
-                    tratarCliqueMeio(pilhaLogica, painelAtual, indexCarta, btnClicado);
+                    acaoInserirPilha(pilhaLogica, grupoPilhaJogoAtual, indexCarta, btnClicado);
                 }
             });
         }
     }
 
-    // --- LÓGICA DE CLIQUE NO TOPO (phg ou Seleção Simples) ---
-    private void tratarCliqueTopo(PilhaJogo pilhaAlvo, agrupamentButoesControle painelAlvo, JButton btnAlvo) {
+    private void acaoInserirSimples(PilhaJogo pilhaAlvo, agrupamentButoesControle grupoPilhaJogoAlvo, JButton btnAlvo) {
         int indexClicado = 0;
         Object propIndex = btnAlvo.getClientProperty("index");
         if (propIndex != null) {
@@ -106,35 +102,32 @@ public class ScreenJogo extends JPanel {
             indexClicado = (int)((Object) btnAlvo.getClientProperty("index"));
         }
         
-
-        // CASO A: Estamos movendo uma SUB-PILHA (Cascata) para cá
-        if (EstadoJogo.temSubPilhaSelecionada()) {
-            Stack<BCard> subPilha = EstadoJogo.getSubPilhaMovimento();
+        if (EstadoJogo.isPilhaSelected()) {
+            Stack<BCard> pilhaMovel = EstadoJogo.getSubPilhaMovimento();
             
-            if (validarMovimentoSubPilha(subPilha, pilhaAlvo)) {
+            if (verificaPilhaMovimento(pilhaMovel, pilhaAlvo)) {
 
                 Stack<BCard> origemReal = EstadoJogo.getPilhaOrigem();
-                int qtdParaRemover = subPilha.size();
+                int qtdParaRemover = pilhaMovel.size();
                 
                 for (int i = 0; i < qtdParaRemover; i++) {
                     if (!origemReal.isEmpty()) origemReal.pop();
                 }
      
-                pilhaAlvo.getJogoPilha().addAll(subPilha);
-                finalizarMovimentoSucesso();
+                pilhaAlvo.getJogoPilha().addAll(pilhaMovel);
+                moverComSucesso();
             } else {
-                cancelarMovimentoSubPilha();
+                cancelarMover();
             }
             return;
         }
 
-        // CASO B: Estamos movendo CARTA ÚNICA para cá
-        if (EstadoJogo.temCartaSelecionada()) {
+        if (EstadoJogo.isCardSelected()) {
             
-            // Toggle (Deselecionar se clicar na mesma)
+
             if (EstadoJogo.getPilhaOrigem() == pilhaAlvo.getJogoPilha()) {
                 EstadoJogo.limparSelecao();
-                painelAlvo.setSelecionado(false);
+                grupoPilhaJogoAlvo.setSelecionado(false);
                 return;
             }
 
@@ -142,44 +135,37 @@ public class ScreenJogo extends JPanel {
             BCard cartaMover = pilhaOrigem.pop();
 
             if (inserirPush(cartaMover, pilhaAlvo)) {
-                // Sucesso
+
                 if (!pilhaOrigem.isEmpty() && !pilhaOrigem.peek().isVisible()) {
                     pilhaOrigem.peek().setVisible(true);
                 }
-                finalizarMovimentoSucesso();
+                moverComSucesso();
             } else {
-                // Falha
+                EstadoJogo.limparSelecao();
                 pilhaOrigem.push(cartaMover);
-                System.out.println("Movimento inválido.");
-                // Opcional: Feedback visual de erro
+   
             }
             return;
         }
 
-        // CASO C: Nada selecionado -> Selecionar esta carta
         if (!pilhaAlvo.getJogoPilha().isEmpty()) {
             EstadoJogo.setSelecao(pilhaAlvo.getJogoPilha(), btnAlvo);
-            painelAlvo.setSelecionado(true);
+            grupoPilhaJogoAlvo.setSelecionado(true);
         }
     }
 
-    // --- LÓGICA DE CLIQUE NO MEIO (Início de Cascata) ---
-    private void tratarCliqueMeio(PilhaJogo pilhaOrigem, agrupamentButoesControle painelOrigem, int indexClicado, JButton btnClicado) {
+    private void acaoInserirPilha(PilhaJogo pilhaOrigem, agrupamentButoesControle grupoPilhaJogoOrigem, int indexClicado, JButton btnClicado) {
         
-        if (EstadoJogo.temCartaSelecionada() || EstadoJogo.temSubPilhaSelecionada()) {
+        if (EstadoJogo.isCardSelected() || EstadoJogo.isPilhaSelected()) {
             pilhaGuardada.setEnabled(false);
             return;
         }
 
-        // Recortar a sub-pilha
         Stack<BCard> stackReal = pilhaOrigem.getJogoPilha();
-
-        // Stack<BCard> tempSubPilha = new Stack<>();
-        // List<BCard> tempLista = new ArrayList<>();
 
         Stack<BCard> copiaSubPilha = new Stack<>();
         
-        // Copia as cartas do índice clicado até o topo
+        // Copia cartas do índice clicado até o topo
         for (int i = indexClicado; i < stackReal.size(); i++) {
             copiaSubPilha.add(stackReal.get(i));
         }
@@ -187,48 +173,45 @@ public class ScreenJogo extends JPanel {
         //System.out.println("Ref: " + tempSubPilha.peek());
         //tempSubPilha = esvaziarPilha(stackReal);
 
-        // Define seleção global
         EstadoJogo.setSelecaoSubPilha(stackReal, copiaSubPilha, btnClicado);
         
-        painelOrigem.destacarSubPilha(indexClicado);
+        grupoPilhaJogoOrigem.destacarSubPilha(indexClicado);
 
     }
 
-    private void finalizarMovimentoSucesso() {
+    private void moverComSucesso() {
 
         if (EstadoJogo.getBotaoOrigem() != null) {
             EstadoJogo.getBotaoOrigem().repaint();
         }
         
         EstadoJogo.limparSelecao();
-        atualizarVisualTodasPilhas();
+        atualizaTodasPilhas();
         
         if (pilhaGuardada != null) pilhaGuardada.iniciarORatualizar();
         this.repaint();
     }
 
-    private void cancelarMovimentoSubPilha() {
+    private void cancelarMover() {
         EstadoJogo.limparSelecao();
-        atualizarVisualTodasPilhas();
+        atualizaTodasPilhas();
     }
 
-    public void atualizarVisualTodasPilhas() {
+    public void atualizaTodasPilhas() {
         for (int i = 0; i < pilhaJogo.size(); i++) {
-            agrupamentButoesControle painel = pilhaJogo.get(i);
+            agrupamentButoesControle grupoPilhaJogo = pilhaJogo.get(i);
             Stack<BCard> dados = listadePilhas.get(i).getJogoPilha();
             
-            // Garante visibilidade do topo
             if (!dados.isEmpty() && !dados.peek().isVisible()) {
                 dados.peek().setVisible(true);
             }
             
-            painel.atualizarVisual(dados);
+            grupoPilhaJogo.atualizarVisual(dados);
             
-            // Reaplica borda amarela se for a seleção atual
             if (EstadoJogo.getPilhaOrigem() == dados) {
-                painel.setSelecionado(true);
+                grupoPilhaJogo.setSelecionado(true);
             } else {
-                painel.setSelecionado(false);
+                grupoPilhaJogo.setSelecionado(false);
             }
         }
     }
@@ -237,7 +220,6 @@ public class ScreenJogo extends JPanel {
         if (!pbg.getJogoPilha().isEmpty()) {
             BCard topo = pbg.getJogoPilha().peek();
             
-            // Regra: Cor diferente e Valor descendente
             if (!movimento.getCorCarta().equals(topo.getCorCarta()) &&
                  movimento.getNumeroDaCarta().getValor() == (topo.getNumeroDaCarta().getValor() - 1)) {
                 
@@ -246,7 +228,7 @@ public class ScreenJogo extends JPanel {
                 return true;
             }
         } else if (movimento.getNumeroDaCarta() == NumCarta.K) {
-            // Regra: Rei em pilha vazia
+
             pbg.getJogoPilha().push(movimento);
             pbg.getJogoPilha().peek().setVisible(true);
             return true;
@@ -254,16 +236,15 @@ public class ScreenJogo extends JPanel {
         return false;
     }
     
-    // Validação para sub-pilhas
-    private boolean validarMovimentoSubPilha(Stack<BCard> subPilha, PilhaJogo destino) {
-        BCard baseDaSubPilha = subPilha.firstElement();
+    private boolean verificaPilhaMovimento(Stack<BCard> pilhaMovel, PilhaJogo destino) {
+        BCard primeiroElemento = pilhaMovel.firstElement();
 
         if (destino.getJogoPilha().isEmpty()) {
-            return baseDaSubPilha.getNumeroDaCarta() == NumCarta.K;
+            return primeiroElemento.getNumeroDaCarta() == NumCarta.K;
         }
-        BCard topoDestino = destino.getJogoPilha().peek();
-        return !baseDaSubPilha.getCorCarta().equals(topoDestino.getCorCarta()) &&
-                baseDaSubPilha.getNumeroDaCarta().getValor() == (topoDestino.getNumeroDaCarta().getValor() - 1);
+        
+        return !primeiroElemento.getCorCarta().equals(destino.getJogoPilha().peek().getCorCarta()) &&
+                primeiroElemento.getNumeroDaCarta().getValor() == (destino.getJogoPilha().peek().getNumeroDaCarta().getValor() - 1);
     }
 
     public void inverte(Stack<BCard> pilhaRef) {
