@@ -11,9 +11,15 @@ import com.faria.telas.ScreenGuardar;
 import com.faria.telas.ScreenJogo;
 import com.faria.telas.ScreenMain;
 
-public class App {
+/**
+ * Classe de execução principal
+ * 
+ * @method iniciar() Inicia todos os componentes necessário para funcionamento
+ *         
+ *
+ * */
 
-    public static Stack<BCard> movimenStack;
+public class App {
 
     public static void main(String[] args) {
         System.out.println("Hello world!");

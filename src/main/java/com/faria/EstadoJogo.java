@@ -3,12 +3,16 @@ package com.faria;
 import java.util.Stack;
 import javax.swing.JButton;
 
+/**
+ * Classe que guarda o estado das jogadas para registro
+ *
+ * */
+
 public class EstadoJogo {
 
     public static Stack<BCard> pilhaOrigem = null; // De onde a carta está saindo
     public static JButton botaoOrigem = null;      // Qual botão/painel precisa ser atualizado visualmente
     
-
     public static Stack<BCard> subPilhaMovimento = null; 
 
 

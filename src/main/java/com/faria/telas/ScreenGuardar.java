@@ -17,6 +17,11 @@ import com.faria.PilhaGuard;
 import com.faria.enums.Naipes;
 import com.faria.enums.NumCarta;
 
+/**
+ * Classe que representa a tela de amostragens das cartas das pilhas que comportam
+ * as cartas alinhadas e empilhadas corretamente
+ * */
+
 public class ScreenGuardar extends JPanel {
 
     private boolean jogada = false;

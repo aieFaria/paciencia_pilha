@@ -16,6 +16,12 @@ import com.faria.agrupamentButoesControle;
 
 import com.faria.enums.NumCarta;
 
+
+/**
+ * Classe que representa a tela de amostragens das cartas manipulaveis em pilhas do jogo 
+ *
+ * */
+
 public class ScreenJogo extends JPanel {
     
     private ScreenGuardar pilhaGuardada;

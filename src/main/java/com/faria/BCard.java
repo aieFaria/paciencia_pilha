@@ -6,7 +6,14 @@ import java.util.List;
 import com.faria.enums.Naipes;
 import com.faria.enums.NumCarta;
 
-// Classe que define uma carta de baralho
+/**
+ * Define as caracteristicas de um Carta, seus métodos e atributos.
+ * Contém valores pertinentes ao escopo em questão
+ * 
+ * 
+ * 
+ * @author Gabriel Faria
+ * */
 public class BCard extends Object{
 
     // Constantes para evitar erros de digitação

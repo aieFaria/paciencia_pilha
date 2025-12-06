@@ -1,5 +1,14 @@
 package com.faria.telas;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
@@ -13,17 +22,13 @@ import javax.swing.KeyStroke;
 
 import com.faria.App;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-/* Classe de controle para melhor visibilidade do código
- *
+/**
+ * Classe que representa tela completa do programa
+ * 
+ * Para cada jogada realizada é necessária atualização local e/ou global dependendo do caso,
+ * Então utiliza-se:
+ * @attribute-pilhaCompra Para chamada de funções para atualização da Classe ScreenDeCompra
+ * @attribute-pilhaFinais Perve para chamada de funções para atualização da Classe ScreenGuardar
  *
  */
 
