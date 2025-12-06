@@ -1,4 +1,4 @@
-package com.faria.telasSecundarias;
+package com.faria.telas;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import com.faria.BCard;
 import com.faria.EstadoJogo;
 import com.faria.PilhaGuard;
-import com.faria.ScreenMain;
 import com.faria.enums.Naipes;
 import com.faria.enums.NumCarta;
 
@@ -28,6 +27,7 @@ public class ScreenGuardar extends JPanel {
     public JButton controlePilhaPaus = new JButton();
     public JButton controlePilhaCopas = new JButton();
     private ScreenJogo screenJogoRef;
+    private boolean vitoria = false;
 
     // Inicialização padrão trava os Naipes das pilhas
     public ScreenGuardar ( ScreenDeCompra monteCompraRef) {
@@ -54,6 +54,7 @@ public class ScreenGuardar extends JPanel {
             controlePilhaCopas.setBounds(0, 0, 105, 140);
 
             controlePilhaCopas.addActionListener(e -> {
+                if(EstadoJogo.temSubPilhaSelecionada()) {return;}
 
                 if (EstadoJogo.temCartaSelecionada()) {
 
@@ -83,11 +84,12 @@ public class ScreenGuardar extends JPanel {
                     if (statusMover) {
 
                         // Atualização dos componentes envolvidos
-                        screenJogoRef.atualizarTodosBotoes();
-                        atualizaBotao(controlePilhaCopas, this.pilhaCopas.getGuardPilha());
-                        EstadoJogo.getPilhaOrigem(); //verificar
+                        
                         monteCompraRef.iniciarORatualizar();
                         EstadoJogo.getBotaoOrigem().repaint();
+                        EstadoJogo.limparSelecao();
+                        screenJogoRef.atualizarVisualTodasPilhas();
+                        atualizaBotao(controlePilhaCopas, this.pilhaCopas.getGuardPilha());
                         this.repaint();
                         this.jogada = true;
 
@@ -95,6 +97,7 @@ public class ScreenGuardar extends JPanel {
                         // Voltar carta para origem
                         EstadoJogo.pilhaOrigem.push(cartaMover);
                         atualizaBotao(controlePilhaCopas, this.pilhaCopas.getGuardPilha());
+                        screenJogoRef.atualizarVisualTodasPilhas();
                         monteCompraRef.iniciarORatualizar();
                         this.repaint();
                     }
@@ -113,6 +116,8 @@ public class ScreenGuardar extends JPanel {
             controlePilhaOuros.setBounds(105+30, 0, 105, 140);
 
             controlePilhaOuros.addActionListener(e -> {
+
+                if(EstadoJogo.temSubPilhaSelecionada()) {return;}
 
                 if (EstadoJogo.temCartaSelecionada()) {
 
@@ -142,11 +147,12 @@ public class ScreenGuardar extends JPanel {
                     if (statusMover) {
 
                         // Atualização dos componentes envolvidos
-                        screenJogoRef.atualizarTodosBotoes();
-                        atualizaBotao(controlePilhaOuros, this.pilhaOuros.getGuardPilha());
-                        EstadoJogo.getPilhaOrigem(); //verificar
+
                         monteCompraRef.iniciarORatualizar();
                         EstadoJogo.getBotaoOrigem().repaint();
+                        EstadoJogo.limparSelecao();
+                        atualizaBotao(controlePilhaOuros, this.pilhaOuros.getGuardPilha());
+                        screenJogoRef.atualizarVisualTodasPilhas();
                         this.repaint();
                         this.jogada = true;
 
@@ -173,6 +179,9 @@ public class ScreenGuardar extends JPanel {
             controlePilhaEspadas.setBounds( 270, 0, 105, 140);
 
             controlePilhaEspadas.addActionListener(e -> {
+
+                // Evita que movimentos de Subpilhas sejam adicionados
+                if(EstadoJogo.temSubPilhaSelecionada()) {return;}
 
                 if (EstadoJogo.temCartaSelecionada()) {
                        
@@ -202,11 +211,12 @@ public class ScreenGuardar extends JPanel {
                     if (statusMover) {
 
                         // Atualização dos componentes envolvidos
-                        screenJogoRef.atualizarTodosBotoes();
-                        atualizaBotao(controlePilhaEspadas, this.pilhaEspadas.getGuardPilha());
-                        EstadoJogo.getPilhaOrigem(); //verificar
+
                         monteCompraRef.iniciarORatualizar();
                         EstadoJogo.getBotaoOrigem().repaint();
+                        EstadoJogo.limparSelecao();
+                        atualizaBotao(controlePilhaEspadas, this.pilhaEspadas.getGuardPilha());
+                        screenJogoRef.atualizarVisualTodasPilhas();
                         this.repaint();
                         this.jogada = true;
 
@@ -224,7 +234,7 @@ public class ScreenGuardar extends JPanel {
                     moverPilha(controlePilhaEspadas, this.pilhaEspadas.getGuardPilha());
                 }
 
-                screenJogoRef.atualizarTodosBotoes();
+                screenJogoRef.atualizarVisualTodasPilhas();
                 atualizaBotao(controlePilhaEspadas, pilhaEspadas.getGuardPilha());
                 monteCompraRef.iniciarORatualizar();
                 this.repaint();
@@ -235,6 +245,8 @@ public class ScreenGuardar extends JPanel {
             controlePilhaPaus.setBounds( 405, 0, 105, 140);
 
             controlePilhaPaus.addActionListener(e -> {
+
+                if(EstadoJogo.temSubPilhaSelecionada()) {return;}
 
                 if (EstadoJogo.temCartaSelecionada()) {
                        
@@ -261,13 +273,13 @@ public class ScreenGuardar extends JPanel {
                  
                     }
 
-                    if (statusMover) {
+                    if (statusMover) {  
 
-                        atualizaBotao(EstadoJogo.botaoOrigem, EstadoJogo.pilhaOrigem);
-                        atualizaBotao(controlePilhaPaus, this.pilhaPaus.getGuardPilha());
-                        EstadoJogo.getPilhaOrigem(); //verificar
                         monteCompraRef.iniciarORatualizar();
                         EstadoJogo.getBotaoOrigem().repaint();
+                        EstadoJogo.limparSelecao();
+                        atualizaBotao(controlePilhaPaus, this.pilhaPaus.getGuardPilha());
+                        screenJogoRef.atualizarVisualTodasPilhas();
                         this.repaint();
                         this.jogada = true;
 
@@ -295,7 +307,10 @@ public class ScreenGuardar extends JPanel {
             atualizaBotao(controlePilhaPaus, pilhaPaus.getGuardPilha());
             atualizaBotao(controlePilhaEspadas, pilhaEspadas.getGuardPilha());
             atualizaBotao(controlePilhaOuros, pilhaOuros.getGuardPilha());
+            monteCompraRef.iniciarORatualizar();
             monteCompraRef.repaint();
+            monteCompraRef.revalidate();
+            verificarvitoria();
 
             this.setBounds(240+30+105+30+10, 5, (controlePilhaCopas.getWidth()+30)*4-30, 140);
             this.add(controlePilhaCopas);
@@ -314,11 +329,13 @@ public class ScreenGuardar extends JPanel {
             monteCompraRef.revalidate();
             this.revalidate();
             this.repaint();
+
+            verificarvitoria();
         }
     }
 
 
-    /*
+    /**
      * Método para mover elementos da pilha
      * @param botão de referencia
      * @param pilha de referencia
@@ -338,7 +355,7 @@ public class ScreenGuardar extends JPanel {
         }
     }
 
-    /*
+    /**
      * Atualiza a carta do topo do monte conforme há a movimentação das cartas
      * @param   botão de referncia para ser aatualizado
      * @param   (PilhaGuard) pilha de referencia para ser analisado o topo
@@ -413,6 +430,18 @@ public class ScreenGuardar extends JPanel {
         this. screenJogoRef = pilhasDoJogo;
     }
 
-    
+    public boolean verificarvitoria() {
+
+        if ((13 == pilhaOuros.getGuardPilha().size() && 13 ==  pilhaCopas.getGuardPilha().size() &&
+            13 == pilhaEspadas.getGuardPilha().size() && 13 ==  pilhaPaus.getGuardPilha().size())) {
+
+        
+
+            ScreenMain.caixaDialogoVitoria();
+            
+        }
+        return vitoria;
+
+    }
     
 }

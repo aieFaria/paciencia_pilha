@@ -1,4 +1,4 @@
-package com.faria.telasSecundarias;
+package com.faria.telas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +15,6 @@ import javax.swing.border.LineBorder;
 
 import com.faria.BCard;
 import com.faria.EstadoJogo;
-import com.faria.ScreenMain;
 
 
 
@@ -45,6 +44,8 @@ public class ScreenDeCompra extends JPanel {
 
             // Ações executadas ao apertar sobre o monte de compra
             controleDoMonte.addActionListener(new ActionListener() {
+
+
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -97,12 +98,19 @@ public class ScreenDeCompra extends JPanel {
     private void clicarMonte(ActionEvent ev) {
         JButton buttonDestino = (JButton) ev.getSource();
 
+        if( EstadoJogo.temSubPilhaSelecionada() ) { return; }
+
+        if (EstadoJogo.temSubPilhaSelecionada()) {
+            EstadoJogo.limparSelecao();
+            return;
+        }
+
         //boolean testeLogico = !(EstadoJogo.pilhaOrigem.equals(pilha1) || EstadoJogo.pilhaOrigem.equals(pilha2));
         if (EstadoJogo.temCartaSelecionada()) {
         
-             System.out.println("Já tem carta selecionada, ação inválida no monte por enquanto.");
-             EstadoJogo.limparSelecao();
-             return;
+            System.out.println("Ação inválida no monte por enquanto.");
+            EstadoJogo.limparSelecao();
+            return;
         }
 
         // 
@@ -149,6 +157,9 @@ public class ScreenDeCompra extends JPanel {
      * quando tiver chegado ao fim
      */
     public void acao() {
+
+        // Evita que a pilha de movimento desapareça
+        if( EstadoJogo.temSubPilhaSelecionada() ) { return; }
 
         // Bloco try-catch para capturar exeção das pilhas vazias
         // Como tratar cada um deles

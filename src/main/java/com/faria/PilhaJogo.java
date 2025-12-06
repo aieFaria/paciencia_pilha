@@ -27,7 +27,7 @@ public class PilhaJogo {
             if ( !movimento.getCorCarta().equals(this.jogoPilha.peek().getCorCarta()) &&
                  movimento.getNumeroDaCarta().getValor() == (this.jogoPilha.peek().getNumeroDaCarta().getValor() - 1)
                 ) {
-                this.jogoPilha.push(movimento); // Adiciona Carta na pilha
+                this.jogoPilha.push(movimento); 
 
                 // Sempre torna o primeiro item da lista visivel por padrão
                 this.jogoPilha.peek().setVisible(true); 

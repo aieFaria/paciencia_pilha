@@ -50,6 +50,7 @@ public class BCard extends Object{
     }
 
 
+
     public Naipes getNaipe() {
         return naipe;
     }

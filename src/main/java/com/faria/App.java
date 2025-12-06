@@ -6,11 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
-import com.faria.enums.Naipes;
-import com.faria.enums.NumCarta;
-import com.faria.telasSecundarias. ScreenDeCompra;
-import com.faria.telasSecundarias.ScreenGuardar;
-import com.faria.telasSecundarias.ScreenJogo;
+import com.faria.telas.ScreenDeCompra;
+import com.faria.telas.ScreenGuardar;
+import com.faria.telas.ScreenJogo;
+import com.faria.telas.ScreenMain;
 
 public class App {
 
@@ -19,6 +18,11 @@ public class App {
     public static void main(String[] args) {
         System.out.println("Hello world!");
 
+        iniciar();
+
+    }
+
+    public static void iniciar() {
         // Construtor da tela
         ScreenMain tela = new ScreenMain("PACIÊNCIA", 
                                          new Dimension(950, 800), 
@@ -26,21 +30,22 @@ public class App {
                                  "icon.png");
         
         tela.setLayout(null); 
+        
 
-        //fds;
+        /*
+         * Baralho é definido como uma Lista de BCard
+         * O baralho recebe um lista com todas as cartas organizadas sequencialmente
+         * Utiliza shuffle cujo @param baralho embaralha as cartas da lista
+         * 
+         * */
         List<BCard> baralho = new ArrayList<>();
         baralho = BCard.gerarBaralho();
-
         Collections.shuffle(baralho);
-
-        BCard carta1 = new BCard(Naipes.PAUS, NumCarta.AS, BCard.PRETO, false);
-        BCard carta2 = new BCard(Naipes.PAUS, NumCarta.DOIS, BCard.PRETO, false);
 
         // Pilhas do monte de compra
         Stack<BCard> pilha1 = new Stack<>(); // Cartas viradas para baixo, isVisible = false
-        System.out.println(baralho.get(24));
-        System.out.println(baralho.get(51));
-        pilha1.addAll(baralho.subList(0, 24));
+
+        pilha1.addAll(baralho.subList(0, 24)); //Separa parte do baralho para a pilha de compra
 
         ScreenDeCompra pilhDeCompra = new  ScreenDeCompra(pilha1, new Stack<>());
         ScreenGuardar pilhasFinais =  new ScreenGuardar(pilhDeCompra);
@@ -57,16 +62,6 @@ public class App {
         tela.add(pilhDeCompra);
 
         tela.atualizarTela("null");
-        
-        // tela.print(pilhDeCompra.toString());
-        // pilhDeCompra.acao();
-        // tela.print("\n" + pilhDeCompra.toString());
-
-        
-    }
-
-    public void monteCompras() {
-
     }
 
 

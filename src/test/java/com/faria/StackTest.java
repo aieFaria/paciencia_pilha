@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import com.faria.enums.Naipes;
 import com.faria.enums.NumCarta;
-import com.faria.telasSecundarias.ScreenDeCompra;
+import com.faria.telas.ScreenDeCompra;
 
 import org.junit.jupiter.api.Nested;
 import static org.junit.jupiter.api.Assertions.*;
