@@ -81,7 +81,7 @@ public class ScreenJogo extends JPanel {
           
             grupoPilhaJogoAtual.setacaoTransferirPilha(e -> {
                 JButton btnClicado = (JButton) e.getSource();
-                // Recupera o índice da carta clicada (propriedade salva no agrupamentButoesControle)
+                
                 Object propIndex = btnClicado.getClientProperty("index");
                 
                 if (propIndex != null) {
