@@ -147,10 +147,12 @@ public class ScreenJogo extends JPanel {
                 }
                 moverComSucesso();
             } else {
+            
+                // Ordem de execução correta para não gerar falhas visuais
+                pilhaOrigem.push(cartaMover);
                 EstadoJogo.limparSelecao();
                 atualizaTodasPilhas();
-                pilhaOrigem.push(cartaMover);
-   
+                
             }
             return;
         }
