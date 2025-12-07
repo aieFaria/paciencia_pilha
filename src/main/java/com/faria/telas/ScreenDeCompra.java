@@ -151,7 +151,8 @@ public class ScreenDeCompra extends JPanel {
                 nomeImage = "fundo.png";
             }
         } else {
-           nomeImage = pilhaRef.equals(pilha1) ? "reset.png" : "empty.png";
+            // Operador ternario que define a figura na carta do topo da pilha
+            nomeImage = ( pilhaRef == pilha1 && !pilha2.isEmpty() ) ? "reset.png" : "empty.png";
         }
 
         Image img = ScreenMain.carregarImagem(nomeImage); 

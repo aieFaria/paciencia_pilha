@@ -5,7 +5,9 @@ Trabalho apresentado como requisito parcial de avaliação.
 Utilização do conhecimentos de Linguagem de Programação, sendo Java a escolhida.
 E tambem na estrutura de dados Pilha.
 
-Cada carta foi gerada pelo autor Gabriel Faria. Utilizando Software de geração de imagens.
+Destacar na descrição: 
+- Cada carta foi gerada pelo autor Gabriel Faria. Utilizando Software de geração de imagens.
+- Cada imagem possui nome correto e todas não obrigatórias para funcionamento correto do programa.
 
 > import java.util.Stack
 
