@@ -81,6 +81,7 @@ public class ScreenJogo extends JPanel {
 
             grupoPilhaJogoAtual.setacaoTransferirUnica(e -> {
                 JButton btnClicado = (JButton) e.getSource();
+
                 acaoInserirSimples(pilhaLogica, grupoPilhaJogoAtual, btnClicado);
             });
 
@@ -88,6 +89,8 @@ public class ScreenJogo extends JPanel {
             grupoPilhaJogoAtual.setacaoTransferirPilha(e -> {
                 JButton btnClicado = (JButton) e.getSource();
                 
+                
+
                 Object propIndex = btnClicado.getClientProperty("index");
                 
                 if (propIndex != null) {
@@ -111,6 +114,7 @@ public class ScreenJogo extends JPanel {
         if (EstadoJogo.isPilhaSelected()) {
             Stack<BCard> pilhaMovel = EstadoJogo.getSubPilhaMovimento();
             
+
             if (verificaPilhaMovimento(pilhaMovel, pilhaAlvo)) {
 
                 Stack<BCard> origemReal = EstadoJogo.getPilhaOrigem();
@@ -166,6 +170,10 @@ public class ScreenJogo extends JPanel {
     private void acaoInserirPilha(PilhaJogo pilhaOrigem, agrupamentButoesControle grupoPilhaJogoOrigem, int indexClicado, JButton btnClicado) {
         
         if (EstadoJogo.isCardSelected() || EstadoJogo.isPilhaSelected()) {
+            
+            EstadoJogo.limparSelecao();
+            cancelarMover();
+
             pilhaGuardada.setEnabled(false);
             return;
         }
@@ -250,6 +258,10 @@ public class ScreenJogo extends JPanel {
 
         if (destino.getJogoPilha().isEmpty()) {
             return primeiroElemento.getNumeroDaCarta() == NumCarta.K;
+        }
+
+        if (EstadoJogo.getPilhaOrigem() == pilhaMovel) {
+            return false;
         }
         
         return !primeiroElemento.getCorCarta().equals(destino.getJogoPilha().peek().getCorCarta()) &&
