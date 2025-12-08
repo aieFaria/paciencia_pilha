@@ -50,7 +50,7 @@ public class ScreenGuardar extends JPanel {
         this.pilhaOuros = new PilhaGuard(Naipes.OUROS);
         this.pilhaEspadas = new PilhaGuard(Naipes.ESPADAS);
         this.pilhaPaus = new PilhaGuard(Naipes.PAUS);
-        this.vitoria = true; // Para testar caixa de dialogo
+        //this.vitoria = true; // Para testar caixa de dialogo
         this.setLocation(1, 1);
         this.setVisible(false);
 
