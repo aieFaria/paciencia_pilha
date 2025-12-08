@@ -27,7 +27,7 @@ import com.faria.enums.NumCarta;
  * @attribute-monteCompraRef  [...]
  * @attribute-pilha*          Instância as pilhas e determina, através do construtor o Naipe que cada uma aceita
  * 
- * @since 0.2v: Corrigindo seleção pilhas 
+ * @since 0.3v: Corrigindo seleção pilhas 
  * */
 
 public class ScreenGuardar extends JPanel {
