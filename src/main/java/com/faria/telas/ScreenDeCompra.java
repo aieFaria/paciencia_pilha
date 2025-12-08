@@ -20,12 +20,12 @@ import com.faria.EstadoJogo;
  * Classe que representa a tela de amostragens da pilha de compra
  * Apresenta suas regras como suas regras
  * 
- * @attribute-pilha1             A pilha de cartas viradas para baixo
- * @attribute-pilha2             A pilha de cartas visiveis que são as visiveis e manipulaveis
- * @attribute-inicializado       Indica se a classe já foi inicializada para regra de 
- *                               atualização dos Componentes da tela
- * @attribute-controleDoMonte    Botão responsável por virar as cartas da pilha1 para pilha2
- * @attribute-controleMonteSaida Botão responsavel por mover as cartas da pilha2 para local indicado
+ * @attribute-pilha1              A pilha de cartas viradas para baixo
+ * @attribute-pilha2              A pilha de cartas visiveis que são as visiveis e manipulaveis
+ * @attribute-inicializado        Indica se a classe já foi inicializada para regra de 
+ *                                atualização dos Componentes da tela
+ * @attribute-controleDoMonte     Botão responsável por virar as cartas da pilha1 para pilha2
+ * @attribute-controleMonteSaida  Botão responsavel por mover as cartas da pilha2 para local indicado
  * 
  * @methods Dispões de métodos que geram os Botões com as devidas figuras de cada carta
  * */
