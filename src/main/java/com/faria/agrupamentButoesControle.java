@@ -17,26 +17,34 @@ import com.faria.telas.ScreenMain;
 
 /**
  * Representa uma coluna visual do jogo (ScreenJogo) com efeito de cascata.
- * Substitui o JButton simples usado anteriormente.
+ * Faz um constructor de JButton que representam as cartas da pilha de jogo
+ * 
+ * @contants LARGURA, ALTURA e ESPACAMENTO: Definem o tamanho da carta, e claro do botão referente a tal carta
+ * 
+ * @attribute-pilhaReferencia      Indica a pilha que pertence ao agrupamento;
+ * @attribute-acaoTransferirUnica  Determina a ação que acontecerá caso tente mover uma única carta, mas que ainda 
+ *                                 não foi definido neste escopo;
+ * @attribute-acaoTransferirPilha  Determina o que acontecerá caso tente mover uma pilha e que ainda não definido 
+ *                                 nesta classe, dessa forma o atributo pode ser definido em outro escopo.
  */
 public class agrupamentButoesControle extends JLayeredPane {
 
     private static final int LARGURA = 105;
     private static final int ALTURA = 140;
-    private static final int ESPACAMENTO = 25; // O espaçamento vertical entre cartas (AQUI ESTÁ O SEGREDO)
+
+    // Determina o tamanho da carta que esta sobreposta eu outra na pilha, seja visivel ou não
+    private static final int ESPACAMENTO = 25; 
 
     private Stack<BCard> pilhaReferencia;
-    private ActionListener acaoTransferirUnica; // O evento que acontecerá ao clicar na carta do topo
+    private ActionListener acaoTransferirUnica;
     private ActionListener acaoTransferirPilha;
 
+    // Construtor inicializa o agrupamento considerando tamanho minimo de uma carta
     public agrupamentButoesControle() {
-        this.setLayout(null); // JLayeredPane precisa de layout null para posicionamento absoluto
-        this.setPreferredSize(new Dimension(LARGURA, ALTURA)); // Tamanho mínimo inicial
+        this.setLayout(null);
+        this.setPreferredSize(new Dimension(LARGURA, ALTURA)); 
     }
 
-    /**
-     * Define o listener que será disparado quando o usuário clicar na carta do TOPO.
-     */
     public void setacaoTransferirUnica(ActionListener acao) {
         setSelecionado(true);
         this.acaoTransferirUnica = acao;
@@ -46,6 +54,8 @@ public class agrupamentButoesControle extends JLayeredPane {
         this.acaoTransferirPilha = acao;
     }
 
+    // Atualiza as cartas de acordo com o estado atual da pilha de referencia
+    // Importante ser chamado sempre que houver uma jogada
     public void atualizarVisual(Stack<BCard> pilha) {
         this.pilhaReferencia = pilha;
         this.removeAll();
@@ -69,6 +79,7 @@ public class agrupamentButoesControle extends JLayeredPane {
                 
                 String nomeImage = "empty.png";
 
+                // Verifica se a carta é visisvel para mostra-la ou não
                 if ( carta.isVisible() ) {
                     nomeImage = (carta.getNumeroDaCarta()+"").toLowerCase() + carta.getNaipe()+".png";
                 } else {
@@ -76,8 +87,7 @@ public class agrupamentButoesControle extends JLayeredPane {
                 }
 
                 botao = criarCartaVisual(nomeImage, ESPACAMENTO*cont);
-                botao.putClientProperty("carta", carta);
-                botao.putClientProperty("index", cont);
+                botao.putClientProperty("index", cont); // Define o index da carta para uso futuro
 
                 if (!pilha.peek().isVisible()) {
                     pilha.peek().setVisible(true);
@@ -87,6 +97,7 @@ public class agrupamentButoesControle extends JLayeredPane {
                     botao.setEnabled(false);
                 }
 
+                // Verifica se o botão se refere a carta no topo da pilha e define sua ação como sendo a simples
                 if (cont == (pilha.size() - 1) ) {
                     if (acaoTransferirUnica != null) {
                         botao.addActionListener(acaoTransferirUnica);
@@ -134,7 +145,7 @@ public class agrupamentButoesControle extends JLayeredPane {
         return btn;
     }
     
-   
+   // Método que cria borda ou remove a borda sobre a carta selecionada
     public void setSelecionado(boolean selecionado) {
         if (this.getComponentCount() > 0) {
             
@@ -156,7 +167,7 @@ public class agrupamentButoesControle extends JLayeredPane {
      * Cria borda em volta da seleção
      * @param indexInicial Se for -1, limpa todas as bordas.
      */
-    public void destacarSubPilha(int indexInicial) {
+    public void destacarSelecao(int indexInicial) {
 
         Border bordaTopo = BorderFactory.createMatteBorder(3, 3, 0, 3, Color.YELLOW);
         Border bordaMeio = BorderFactory.createMatteBorder(0, 3, 0, 3, Color.YELLOW);

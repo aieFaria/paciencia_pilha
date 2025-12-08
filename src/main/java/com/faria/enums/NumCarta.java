@@ -1,6 +1,6 @@
 package com.faria.enums;
 
-// Enum para numeração das cartas
+// Enum para numeração das cartas, determinando seu valor (tipo int) e simbolo referente (tipo String)
 public enum NumCarta {
     K(13, "K"),
     Q(12, "Q"),

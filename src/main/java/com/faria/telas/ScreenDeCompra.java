@@ -125,8 +125,8 @@ public class ScreenDeCompra extends JPanel {
 
         // 
         if (!pilha2.isEmpty()) {
-            EstadoJogo.pilhaOrigem = this.pilha2;
-            EstadoJogo.botaoOrigem = buttonDestino;
+            EstadoJogo.setPilhaOrigem(this.pilha2);
+            EstadoJogo.setBotaoOrigem(buttonDestino);
             
             // Borda de seleção
             buttonDestino.setBorder(new LineBorder(Color.YELLOW, 3)); 
@@ -136,10 +136,10 @@ public class ScreenDeCompra extends JPanel {
 
     }
     
-    /*
+    /**
      * Atualiza a carta do topo do monte conforme há a movimentação das cartas
-     * @param   botão de referncia para ser aatualizado
-     * @param   pilha de referencia para ser analisado o topo
+     * @param botão de referncia para ser aatualizado
+     * @param pilha de referencia para ser analizado o topo/base
      */
     private void atualizaBotao(JButton botao, Stack<BCard> pilhaRef) {
         String nomeImage = "";
@@ -164,7 +164,7 @@ public class ScreenDeCompra extends JPanel {
 
     /*
      * Função que realiza o movimento de pegar as cartas do Monte de comprar
-     * A mesma função é responsável por retornar as cartas para o MOnte novamente 
+     * A mesma função é responsável por retornar as cartas para o Monte novamente 
      * quando tiver chegado ao fim
      */
     public void acao() {
@@ -203,10 +203,10 @@ public class ScreenDeCompra extends JPanel {
 
     }
 
-    /*
+    /**
      * Função para esvaziar uma pilha qualquer
-     * @param Recebe como parametro a pilha que será esvaziada
-     * @return Retorna a pilha esvaziada para o reaproveitamento
+     * @param pilhaRef Recebe como parametro a pilha que será esvaziada
+     * @return         Retorna a pilha esvaziada para o reaproveitamento
      * 
      * OBS: A ordem da pilha retornada pela função fica ao contrário da pilha
      *      esvaziada.

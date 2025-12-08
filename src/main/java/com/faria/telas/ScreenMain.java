@@ -27,6 +27,7 @@ import com.faria.App;
  * 
  * Para cada jogada realizada é necessária atualização local e/ou global dependendo do caso,
  * Então utiliza-se:
+ * 
  * @attribute-pilhaCompra Para chamada de funções para atualização da Classe ScreenDeCompra
  * @attribute-pilhaFinais Perve para chamada de funções para atualização da Classe ScreenGuardar
  *
@@ -89,7 +90,7 @@ public class ScreenMain extends JFrame {
         this.console.setText(texto);
     }
 
-    /*
+    /**
      * Carregamento de imagem com BufferImage
      * Evita erros na abertura da imagem
      * @param caminho É o nome do arquivo da imagem préviamente salvo na pasta resources.
@@ -119,52 +120,54 @@ public class ScreenMain extends JFrame {
         return img;
     }
 
+    // Configura a caixa de dialogo aberto quando a condição de vitória for satisfeita
     public static void caixaDialogoVitoria() {
+
         ImageIcon iconePersonalizado = new ImageIcon(
                 ScreenMain.carregarImagem("vitoria.png").getScaledInstance(64, 64, Image.SCALE_SMOOTH)
             );
 
-            Object[] options = {"Iniciar outra partida", "Sair do jogo"};
-            String mensagem = "<html><body style='width: 300px'>" + 
-                  "PARABÉNS VOCÊ CONCLUIU O JOGO!<br>" + 
-                  "O que deseja fazer?</body></html>";
-   
-            JOptionPane optionPane = new JOptionPane(
-                mensagem,                        
-                JOptionPane.PLAIN_MESSAGE,     
-                JOptionPane.YES_NO_OPTION,       
-                iconePersonalizado,              
-                options,                        
-                options[0]                      
-            );
+        Object[] options = {"Iniciar outra partida", "Sair do jogo"};
+        String mensagem = "<html><body style='width: 300px'>" + 
+                "PARABÉNS VOCÊ CONCLUIU O JOGO!<br>" + 
+                "O que deseja fazer?</body></html>";
 
-            JDialog dialog = optionPane.createDialog("Vitória!");
+        JOptionPane optionPane = new JOptionPane(
+            mensagem,                        
+            JOptionPane.PLAIN_MESSAGE,     
+            JOptionPane.YES_NO_OPTION,       
+            iconePersonalizado,            
+            options,                        
+            options[0]                      
+        );
+
+        JDialog dialog = optionPane.createDialog("Vitória!");
+
+        dialog.setIconImage(carregarImagem("iconCute.png"));
+        dialog.setLocation(300, 350);
+        dialog.setSize(350, 150);
+        dialog.setResizable(false);
 
 
-            dialog.setLocation(300, 350);;
-            dialog.setSize(350, 150);
-            dialog.setResizable(false);
+        dialog.setVisible(true); 
+
+        switch (optionPane.getValue() != null ? (String) optionPane.getValue() : "Sair do jogo") {
+            case "Iniciar outra partida":
+                for (java.awt.Window window : java.awt.Window.getWindows()) {
+                    window.dispose();
+                }
+                App.iniciar();
+            break;
+
+            case "Sair do jogo":
+                System.exit(0);
+            break;
 
 
-            dialog.setVisible(true); 
-
-            switch (optionPane.getValue() != null ? (String) optionPane.getValue() : "Sair do jogo") {
-                case "Iniciar outra partida":
-                    for (java.awt.Window window : java.awt.Window.getWindows()) {
-                        window.dispose();
-                    }
-                    App.iniciar();
+            default:
+                System.exit(0);
                 break;
-
-                case "Sair do jogo":
-                    System.exit(0);
-                break;
-
-
-                default:
-                    System.exit(0);
-                    break;
-            }
+        }
     }
 
 }

@@ -1,5 +1,7 @@
 package com.faria.enums;
 
+
+// Define cada naipe e seus simbolos
 public enum Naipes {
     ESPADAS("♠"),
     COPAS("♥"),

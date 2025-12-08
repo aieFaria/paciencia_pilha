@@ -53,6 +53,8 @@ public class App {
 
         pilha1.addAll(baralho.subList(0, 24)); //Separa parte do baralho para a pilha de compra
 
+
+        //Construção das informações que compõem a tela do jogo
         ScreenDeCompra pilhDeCompra = new  ScreenDeCompra(pilha1, new Stack<>());
         ScreenGuardar pilhasFinais =  new ScreenGuardar(pilhDeCompra);
         ScreenJogo pilhasDoJogo = new ScreenJogo(pilhasFinais, baralho.subList(24, 52));
@@ -60,6 +62,8 @@ public class App {
         pilhDeCompra.setScreenJogo(pilhasDoJogo);
         //System.out.println(pilhDeCompra.getPilha1());
 
+
+        // Quando chamada primeira vez carrega as funções, botões e estados iniciais
         pilhasDoJogo.iniciarORatualizar();
         pilhDeCompra.iniciarORatualizar();
         pilhasFinais.iniciarORatualizar();

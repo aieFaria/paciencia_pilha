@@ -8,9 +8,13 @@ import com.faria.enums.NumCarta;
 
 /**
  * Define as caracteristicas de um Carta, seus métodos e atributos.
- * Contém valores pertinentes ao escopo em questão
+ * Contém valores pertinentes ao escopo em questão.
  * 
- * 
+ * @attribute-naipe          Define o naipe da carta como sendo um ENUM próprio;
+ * @attribute-numeroDaCarta  Define a númeração da carta, sendo um ENUM que armazena o valor númerico e símbolo;
+ * @attribute-corCarta       Define a cor da carta para ser usado de maneira lógica resumida em {@classe ScreenJogo};
+ * @attribute-visibilidade   Define a visibilidade da carta como sendo um boolean, true para carta visivel e false 
+ *                           para uma carta virada para baixo.
  * 
  * @author Gabriel Faria
  * */
@@ -25,14 +29,6 @@ public class BCard extends Object{
     private String corCarta; //vermelho ou preto
     private boolean visibilidade; //True → carta virada pra cima, False → carta virada para baixo
 
-    
-    public String getCorCarta() {
-        return corCarta;
-    }
-
-    public void setCorCarta(String corCarta) {
-        this.corCarta = corCarta;
-    }
 
     // Construtor padrão de uma Carta
     public BCard(Naipes naipe, NumCarta numeroDaCarta, String cor, boolean visibilidade){
@@ -56,7 +52,13 @@ public class BCard extends Object{
         return cartaInfo.toString();
     }
 
+    public String getCorCarta() {
+        return corCarta;
+    }
 
+    public void setCorCarta(String corCarta) {
+        this.corCarta = corCarta;
+    }
 
     public Naipes getNaipe() {
         return naipe;

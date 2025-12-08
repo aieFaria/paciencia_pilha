@@ -13,14 +13,24 @@ import com.faria.BCard;
 import com.faria.EstadoJogo;
 import com.faria.PilhaJogo;
 import com.faria.agrupamentButoesControle;
-
 import com.faria.enums.NumCarta;
 
 
 /**
  * Classe que representa a tela de amostragens das cartas manipulaveis em pilhas do jogo 
- *
+ * 
+ * @attribute-pilhaGuardada Utilizada para chamar a atualização da tela que armazenam as pilhas 
+ *                          que são guardadas;
+ * @attribute-listadePilhas É a lista de pilhas que podem ser manipuladas em lote considerando 
+ *                          as regras de atribuição.
+ * 
+ * @constructor O construtor desta classe recebe como parametros, o atributo pilhaGuardada e também
+ *              a referencia do baralho, ja limitado ao número de cartas ideal para geração inicial do
+ *              jogo, através de {@link #geraPilhasDeJogoInicial(List)}
+ *              
  * */
+
+
 
 public class ScreenJogo extends JPanel {
     
@@ -41,7 +51,7 @@ public class ScreenJogo extends JPanel {
             this.setLayout(null);
 
             if (pilhaJogo.isEmpty()) {
-                criarPaineisVisuais();
+                iniciarAgrupamentoBotoes();
                 configurarBotoes();
             }
             
@@ -62,7 +72,8 @@ public class ScreenJogo extends JPanel {
         }
     }
 
-    private void criarPaineisVisuais() {
+    // Cria o agrupamento de botões com base na classe "agrupamentButoesControle"
+    private void iniciarAgrupamentoBotoes() {
         for (int i = 0; i < 7; i++) {
             agrupamentButoesControle grupoPilhaJogo = new agrupamentButoesControle();
 
@@ -73,6 +84,8 @@ public class ScreenJogo extends JPanel {
         }
     }
 
+    // Configura cada botão a nivel de pilha e define a acao que sera executada ao clicar no botão de referencia
+    // seja ele na base da pilha ou no meio da pilha (Caso a carta seja visível)
     private void configurarBotoes() {
         for (int ii = 0; ii < this.pilhaJogo.size(); ii++) {
             
@@ -88,8 +101,6 @@ public class ScreenJogo extends JPanel {
           
             grupoPilhaJogoAtual.setacaoTransferirPilha(e -> {
                 JButton btnClicado = (JButton) e.getSource();
-                
-                
 
                 Object propIndex = btnClicado.getClientProperty("index");
                 
@@ -102,6 +113,8 @@ public class ScreenJogo extends JPanel {
         }
     }
 
+    // Define a ação mais simples de inserção, movendo uma carta da pilha para outra pilha qualquer, podenso ser 
+    // qualquer pilha, mesmo aquelas recusadas.
     private void acaoInserirSimples(PilhaJogo pilhaAlvo, agrupamentButoesControle grupoPilhaJogoAlvo, JButton btnAlvo) {
         int indexClicado = 0;
         Object propIndex = btnAlvo.getClientProperty("index");
@@ -112,7 +125,7 @@ public class ScreenJogo extends JPanel {
         }
         
         if (EstadoJogo.isPilhaSelected()) {
-            Stack<BCard> pilhaMovel = EstadoJogo.getSubPilhaMovimento();
+            Stack<BCard> pilhaMovel = EstadoJogo.getpilhaMovimento();
             
 
             if (verificaPilhaMovimento(pilhaMovel, pilhaAlvo)) {
@@ -127,7 +140,8 @@ public class ScreenJogo extends JPanel {
                 pilhaAlvo.getJogoPilha().addAll(pilhaMovel);
                 moverComSucesso();
             } else {
-                cancelarMover();
+                EstadoJogo.limparSelecao();
+                atualizaTodasPilhas();
             }
             return;
         }
@@ -146,9 +160,6 @@ public class ScreenJogo extends JPanel {
 
             if (inserirPush(cartaMover, pilhaAlvo)) {
 
-                if (!pilhaOrigem.isEmpty() && !pilhaOrigem.peek().isVisible()) {
-                    pilhaOrigem.peek().setVisible(true);
-                }
                 moverComSucesso();
             } else {
             
@@ -172,7 +183,7 @@ public class ScreenJogo extends JPanel {
         if (EstadoJogo.isCardSelected() || EstadoJogo.isPilhaSelected()) {
             
             EstadoJogo.limparSelecao();
-            cancelarMover();
+            atualizaTodasPilhas();
 
             pilhaGuardada.setEnabled(false);
             return;
@@ -180,22 +191,21 @@ public class ScreenJogo extends JPanel {
 
         Stack<BCard> stackReal = pilhaOrigem.getJogoPilha();
 
-        Stack<BCard> copiaSubPilha = new Stack<>();
+        Stack<BCard> pilhaMovimento = new Stack<>();
         
-        // Copia cartas do índice clicado até o topo
+
         for (int i = indexClicado; i < stackReal.size(); i++) {
-            copiaSubPilha.add(stackReal.get(i));
+            pilhaMovimento.add(stackReal.get(i));
         }
 
-        //System.out.println("Ref: " + tempSubPilha.peek());
-        //tempSubPilha = esvaziarPilha(stackReal);
 
-        EstadoJogo.setSelecaoSubPilha(stackReal, copiaSubPilha, btnClicado);
+        EstadoJogo.setSelecaoDePilha(stackReal, pilhaMovimento, btnClicado);
         
-        grupoPilhaJogoOrigem.destacarSubPilha(indexClicado);
+        grupoPilhaJogoOrigem.destacarSelecao(indexClicado);
 
     }
 
+    // Método auxiliar para realizar a finalização da operação de mover a(s) pilha(s) com sucesso
     private void moverComSucesso() {
 
         if (EstadoJogo.getBotaoOrigem() != null) {
@@ -205,15 +215,13 @@ public class ScreenJogo extends JPanel {
         EstadoJogo.limparSelecao();
         atualizaTodasPilhas();
         
-        if (pilhaGuardada != null) pilhaGuardada.iniciarORatualizar();
+        if (pilhaGuardada != null) 
+            pilhaGuardada.iniciarORatualizar();
+
         this.repaint();
     }
 
-    private void cancelarMover() {
-        EstadoJogo.limparSelecao();
-        atualizaTodasPilhas();
-    }
-
+    // Função para atualizar todas as pilhas da parte debaixo do jogo, Referenciadas como Pilhas de jogo
     public void atualizaTodasPilhas() {
         for (int i = 0; i < pilhaJogo.size(); i++) {
             agrupamentButoesControle grupoPilhaJogo = pilhaJogo.get(i);
@@ -233,12 +241,13 @@ public class ScreenJogo extends JPanel {
         }
     }
 
+    // Insere uma carta na pilha do jogo, passadas como parâmetro
     public boolean inserirPush(BCard movimento, PilhaJogo pbg) {
         if (!pbg.getJogoPilha().isEmpty()) {
-            BCard topo = pbg.getJogoPilha().peek();
+            BCard base = pbg.getJogoPilha().peek();
             
-            if (!movimento.getCorCarta().equals(topo.getCorCarta()) &&
-                 movimento.getNumeroDaCarta().getValor() == (topo.getNumeroDaCarta().getValor() - 1)) {
+            if (!movimento.getCorCarta().equals(base.getCorCarta()) &&
+                 movimento.getNumeroDaCarta().getValor() == (base.getNumeroDaCarta().getValor() - 1)) {
                 
                 pbg.getJogoPilha().push(movimento);
                 pbg.getJogoPilha().peek().setVisible(true);
@@ -253,6 +262,7 @@ public class ScreenJogo extends JPanel {
         return false;
     }
     
+    // Válida se a pilha de movimento pode ser adicionada na pilha de destino com base no primeiro elemento
     private boolean verificaPilhaMovimento(Stack<BCard> pilhaMovel, PilhaJogo destino) {
         BCard primeiroElemento = pilhaMovel.firstElement();
 
@@ -266,17 +276,6 @@ public class ScreenJogo extends JPanel {
         
         return !primeiroElemento.getCorCarta().equals(destino.getJogoPilha().peek().getCorCarta()) &&
                 primeiroElemento.getNumeroDaCarta().getValor() == (destino.getJogoPilha().peek().getNumeroDaCarta().getValor() - 1);
-    }
-
-    public void inverte(Stack<BCard> pilhaRef) {
-        Stack<BCard> aux = new Stack<>();
-
-        while ( !pilhaRef.isEmpty() ) {
-            aux.push( pilhaRef.pop() );
-        }
-
-        pilhaRef = aux;
-        
     }
 
     public List<PilhaJogo> geraPilhasDeJogoInicial(List<BCard> baralahoRef) {
@@ -299,26 +298,12 @@ public class ScreenJogo extends JPanel {
         return retorno;
     }
 
-    public static Stack<BCard> esvaziarPilha(Stack<BCard> pilhaRef, int limite) {
-
-        final int tamanho = pilhaRef.size();
-        int i = 0;
-        Stack<BCard> retorno = new Stack<>();
-        List<BCard> aux = new ArrayList<>();
-
-        while ( i < tamanho - limite && !pilhaRef.isEmpty()) {
-            BCard movido = pilhaRef.pop();
-            i++;
-            aux.add( movido ); //Adiciona cada elemeto removido em sequencia
-        }
-
-        for (int j = aux.size() - 1; j >= 0; j--) {
-            retorno.push(aux.get(j));
-        }
-
-        return retorno;
+    public ScreenGuardar getPilhaGuardada() { 
+        return pilhaGuardada;
     }
 
-    public ScreenGuardar getPilhaGuardada() { return pilhaGuardada; }
-    public void setPilhaGuardada(ScreenGuardar pilhaGuardada) { this.pilhaGuardada = pilhaGuardada; }
+    // Definição do set para declaração posterior a instanciação da classe ScreenJogo na função principal
+    public void setPilhaGuardada(ScreenGuardar pilhaGuardada) { 
+        this.pilhaGuardada = pilhaGuardada; 
+    }
 }
