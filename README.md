@@ -14,7 +14,7 @@ Destacar na descrição:
 
 ## 📜 Tarefas a serem realizadas:
 - [✔️] - Criar lógica do jogo;
-- [❌] - Implementar testes unitários de partes do jogo;
+- [🔘] - Implementar testes unitários de partes do jogo;
 - [✔️] - Criar interface do jogo.
 
 
